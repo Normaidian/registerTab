@@ -4,6 +4,10 @@
 #include <string>
 #include <sstream>
 
+// nalezy dynamicznie tworzyc wielkosc tablic lineNameTab[] oraz lineAddTab[].
+// Potrzebna funkcja zliczajaca ilosc lini w pliku i tworzaca tablice odpowiedniej wielkosci. Sprobowa� przy pomocy wskaznikow.
+// dorobi� pomijanie grup kt�re ju� s� zczytane
+
 using namespace std;
 
 
@@ -11,8 +15,8 @@ fstream file,file2;
 string road, groupAddHex, lineAddHex, lineName;
 string tabGroup[3] ={"hgroup.", "rgroup", "group."};
 string tabLine[2] ={"hide.", "line."};
-string lineAddTab[2];   //  TUTAJ TZEBA CHYBA ZASTOSOWA� WSKA�NIKI
-string lineNameTab[2];  //  TUTAJ TZEBA CHYBA ZASTOSOWA� WSKA�NIKI
+string lineAddTab[44];   //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
+string lineNameTab[44];  //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
 
 string searchGroup(string line);
 string searchLine(string groupAddHex,string line);
@@ -24,7 +28,7 @@ int main(){
 
     file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
 
-    // zrobić try/catch
+    // zrobi� try/catch
     if(file.good()==false){
         cout<< "Zly plik!" <<endl;
         exit(0);
@@ -40,10 +44,8 @@ int main(){
                 //! Cleaning empty space at line beginning
                 line = line.substr(position,line.length());
                 searchGroup(line);
-                tbreak = true;
             }
         }
-        if(tbreak == true)  break;
     }
     file.close();
 
@@ -74,25 +76,17 @@ string searchLine(string groupAddHex, string temp_line){
 
     file2.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
 
-    // zrobić try/catch
+    // zrobi� try/catch
     if(file2.good()==false){
         cout<< "Zly plik!" <<endl;
         exit(0);
     }
 
     while(getline(file2, line)){
-        if(breakCounter > 1)    break;
 
-        // Za dużo lini wykrywa. Bierze jedną z następnej grupy
-        // należy dynamicznie tworzyć wielkość tablic lineNameTab[] oraz lineAddTab[].
-        // Potrzebna funkcja zliczająca ilośc lini w pliku i tworząca tablice odpowiedniej wielkości. Spróbować przy pomocy wskaźników.
-        // Spróbować przerywać po wyszukaniu kolejnej grupy
-        // Zrobić
-        //! if (linia = group) && (wystapienie != 0)
-        //!     break
-        //! elif (linia = line)
-        //!     linia do tabeli
-        //! endif
+        if((line.length()>0)&&(line.find("group")!=string::npos)&&(breakCounter>0)){
+            break;
+        }
 
         for(int i = 0; i<2;i++){ //! 0-"hide.", 1-"line"
             size_t position = line.find(tabLine[i]);

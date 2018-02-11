@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1518343405 source:e:\c++\registertab\main.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	<sstream>
+

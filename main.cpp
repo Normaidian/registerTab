@@ -7,6 +7,7 @@
 // nalezy dynamicznie tworzyc wielkosc tablic lineNameTab[] oraz lineAddTab[].
 // Potrzebna funkcja zliczajaca ilosc lini w pliku i tworzaca tablice odpowiedniej wielkosci. Sprobowaæ przy pomocy wskaznikow.
 // dorobiæ pomijanie grup które ju¿ s¹ zczytane
+// CZY OTWIEANIE I ZAMYKANIE PLIKU W PETLI JEST OK?
 
 using namespace std;
 
@@ -17,7 +18,7 @@ string tabGroup[3] ={"hgroup.", "rgroup", "group."};
 string tabLine[2] ={"hide.", "line."};
 string lineAddTab[44];   //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
 string lineNameTab[44];  //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
-int counter;
+int max_counter, counter = 1;
 
 void searchGroup();
 string searchLine(string groupAddHex,string line);
@@ -35,7 +36,18 @@ int main(){
         exit(0);
     }
 
-    while(getline(file, line)){
+
+    while(getline(file, line)){     max_counter++;}
+
+    file.close();
+
+    while(counter<=max_counter){
+        file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
+
+        for(int skip=0;skip<=counter-1;skip++){
+                getline(file,line);
+        }
+
         for(int i = 0; i<3;i++){ //! 0-"hgroup.", 1-"rgroup", 2-"group."
             //! Searching hgroup/rgroup/group
             size_t position = line.find(tabGroup[i]);
@@ -47,8 +59,9 @@ int main(){
                 searchGroup();
             }
         }
+        counter++;
+        file.close();
     }
-    file.close();
 
     //! Output results
     //!for (int i = 0; i <sizeof(lineAddTab)/sizeof(string);i++){
@@ -64,7 +77,13 @@ void searchGroup(){
 
     while((line.find("group")==string::npos)){
         getline(file,line);
-        if((line.find("line.")!=string::npos)||(line.find("hide")!=string::npos)) cout << line << endl;
+        if(line.find("line.")!=string::npos){
+            line = line.substr(line.find("line"),line.length());
+            cout << line << endl;
+        }else if(line.find("hide")!=string::npos){
+            line = line.substr(line.find("hide"),line.length());
+            cout << line <<endl;
+        }
     }
 }
 

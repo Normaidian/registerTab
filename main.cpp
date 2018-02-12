@@ -11,14 +11,15 @@
 using namespace std;
 
 
-fstream file,file2;
+fstream file;
 string road, groupAddHex, lineAddHex, lineName;
 string tabGroup[3] ={"hgroup.", "rgroup", "group."};
 string tabLine[2] ={"hide.", "line."};
 string lineAddTab[44];   //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
 string lineNameTab[44];  //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
+int counter;
 
-string searchGroup(string line);
+void searchGroup();
 string searchLine(string groupAddHex,string line);
 string fullAdd(string groupOff, string lineOff);
 
@@ -43,71 +44,33 @@ int main(){
 
                 //! Cleaning empty space at line beginning
                 line = line.substr(position,line.length());
-                searchGroup(line);
+                searchGroup();
             }
         }
     }
     file.close();
 
     //! Output results
-    for (int i = 0; i <sizeof(lineAddTab)/sizeof(string);i++){
-        cout << lineAddTab[i] << " - " << lineNameTab[i]<<endl;
-    }
+    //!for (int i = 0; i <sizeof(lineAddTab)/sizeof(string);i++){
+    //!    cout << lineAddTab[i] << " - " << lineNameTab[i]<<endl;
+    //!}
 
     return 0;
 }
 
-string searchGroup(string line){
+void searchGroup(){
 
-    for (int i = 0; i <line.length();i++){
-        if(line.substr(i,i+5)=="group"||line.substr(i,i+6)=="rgroup"||line.substr(i,i+6)=="hgroup"){
-            groupAddHex = line.substr(line.find("0x"),line.find("++")-line.find("0x"));
+    string line;
 
-            searchLine(groupAddHex,line);
-        }
+    while((line.find("group")==string::npos)){
+        getline(file,line);
+        if((line.find("line.")!=string::npos)||(line.find("hide")!=string::npos)) cout << line << endl;
     }
-
-    return "??";
 }
 
 string searchLine(string groupAddHex, string temp_line){
-    string line;
-    int counter = 0, breakCounter = 0;
 
-    file2.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
 
-    // zrobiæ try/catch
-    if(file2.good()==false){
-        cout<< "Zly plik!" <<endl;
-        exit(0);
-    }
-
-    while(getline(file2, line)){
-
-        if((line.length()>0)&&(line.find("group")!=string::npos)&&(breakCounter>0)){
-            break;
-        }
-
-        for(int i = 0; i<2;i++){ //! 0-"hide.", 1-"line"
-            size_t position = line.find(tabLine[i]);
-
-            if(position!=string::npos){
-                //! Offset searching
-                lineAddHex = line.substr(line.find("0x"),line.find('"')-line.find("0x")-1);
-                lineAddTab[counter] = fullAdd(groupAddHex,lineAddHex);
-
-                //! Line name searching
-                lineNameTab[counter] = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);
-
-                counter++;
-
-                cout << "group: " << groupAddHex << " line: " << lineAddHex << " pelny: " << fullAdd(groupAddHex,lineAddHex) << " counter: " << counter << endl;
-
-                if (lineAddHex == "0x00")   breakCounter++;
-            }
-        }
-    }
-    file2.close();
     return "??";
 }
 

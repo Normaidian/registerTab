@@ -14,53 +14,69 @@ using namespace std;
 
 fstream file;
 string road, groupAddHex, lineAddHex, lineName;
-string tabGroup[3] ={"hgroup.", "rgroup", "group."};
-string tabLine[2] ={"hide.", "line."};
+string tabGroup[3] = {"hgroup.", "rgroup", "group."};
+string tabLine[2] = {"hide.", "line."};
 string lineAddTab[44];   //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
 string lineNameTab[44];  //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
 int max_counter, counter = 1;
 
-void searchGroup();
-string searchLine(string groupAddHex,string line);
+void searchRegister(string *fileTab,int current_line);
 string fullAdd(string groupOff, string lineOff);
 
-int main(){
-    string line;
+int main()
+{
+    string line, fileLocation = "";
     bool tbreak =false;
 
+    //cin >> fileLocation;
+
     file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
+    //file.open(fileLocation, ios::in);
 
     // zrobiæ try/catch
-    if(file.good()==false){
+    if(file.good()==false)
+    {
         cout<< "Zly plik!" <<endl;
         exit(0);
     }
 
 
-    while(getline(file, line)){     max_counter++;}
+    while(getline(file, line))
+    {
+        max_counter++;
+    }
 
     file.close();
 
-    while(counter<=max_counter){
-        file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
+    string fileTab[max_counter];
 
-        for(int skip=0;skip<=counter-1;skip++){
-                getline(file,line);
+    file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
+    for(int i = 0; i < max_counter; i++)        getline(file,fileTab[i]);
+    file.close();
+
+    for(int j = 0; j<max_counter; j++)
+    {
+
+        if(fileTab[j].find("hgroup.")!=string::npos)
+        {
+            fileTab[j] = fileTab[j].substr(fileTab[j].find("hgroup"),fileTab[j].length());
+            cout << fileTab[j] << endl;
+            searchRegister(fileTab,j);
+
+        }
+        else if(fileTab[j].find("rgroup.")!=string::npos)
+        {
+            fileTab[j] = fileTab[j].substr(fileTab[j].find("rgroup"),fileTab[j].length());
+            cout << fileTab[j] << endl;
+            searchRegister(fileTab,j);
+        }
+        else if(fileTab[j].find("group.")!=string::npos)
+        {
+            fileTab[j] = fileTab[j].substr(fileTab[j].find("group"),fileTab[j].length());
+            cout << fileTab[j] << endl;
+            searchRegister(fileTab,j);
         }
 
-        for(int i = 0; i<3;i++){ //! 0-"hgroup.", 1-"rgroup", 2-"group."
-            //! Searching hgroup/rgroup/group
-            size_t position = line.find(tabGroup[i]);
-
-            if(position!=string::npos){
-
-                //! Cleaning empty space at line beginning
-                line = line.substr(position,line.length());
-                searchGroup();
-            }
-        }
-        counter++;
-        file.close();
     }
 
     //! Output results
@@ -71,29 +87,33 @@ int main(){
     return 0;
 }
 
-void searchGroup(){
+void searchRegister(string *fileTab,int current_Line)
+{
 
     string line;
 
-    while((line.find("group")==string::npos)){
-        getline(file,line);
-        if(line.find("line.")!=string::npos){
-            line = line.substr(line.find("line"),line.length());
-            cout << line << endl;
-        }else if(line.find("hide")!=string::npos){
-            line = line.substr(line.find("hide"),line.length());
-            cout << line <<endl;
+    for( int i = current_Line+1; i < max_counter ; i++)
+    {
+
+        if(fileTab[i].find("line.")!=string::npos)
+        {
+            fileTab[i] = fileTab[i].substr(fileTab[i].find("line"),fileTab[i].length());
+            cout << fileTab[i] << endl;
+        }
+        else if(fileTab[i].find("hide")!=string::npos)
+        {
+            fileTab[i] = fileTab[i].substr(fileTab[i].find("hide"),fileTab[i].length());
+            cout << fileTab[i] <<endl;
+        }
+        else if(fileTab[i].find("group")!=string::npos)
+        {
+            break;
         }
     }
 }
 
-string searchLine(string groupAddHex, string temp_line){
-
-
-    return "??";
-}
-
-string fullAdd(string groupOff, string lineOff){
+string fullAdd(string groupOff, string lineOff)
+{
     int groupAddDec, lineAddDec;
     string fullAdd;
     std::stringstream ss, ss1, ss2;

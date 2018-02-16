@@ -132,7 +132,6 @@ string fullAdd(string groupOff, string lineOff){
     ss2 >> lineAddDec;
 
     //! Sum of decimal virables to Hexadecimal
-    cout << baseAddDec + groupAddDec + lineAddDec << endl;
     ss3 << std::hex << baseAddDec + groupAddDec + lineAddDec;
     ss3 >> fullAdd;
 

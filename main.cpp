@@ -5,9 +5,7 @@
 #include <sstream>
 
 // nalezy dynamicznie tworzyc wielkosc tablic lineNameTab[] oraz lineAddTab[].
-// Potrzebna funkcja zliczajaca ilosc lini w pliku i tworzaca tablice odpowiedniej wielkosci. Sprobowaæ przy pomocy wskaznikow.
-// dorobiæ pomijanie grup które ju¿ s¹ zczytane
-// CZY OTWIEANIE I ZAMYKANIE PLIKU W PETLI JEST OK?
+// NEXT: funkcja obsÅ‚ugujÄ…ca for'y (tworzenie odpowiedniej iloÅ›ci rejestrÃ³w)
 
 using namespace std;
 
@@ -35,7 +33,7 @@ int main(){
     file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
     //file.open(fileLocation, ios::in);
 
-    // zrobiæ try/catch
+    // zrobiÃ¦ try/catch
     if(file.good()==false){
         cout<< "Zly plik!" <<endl;
         exit(0);

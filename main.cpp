@@ -11,27 +11,61 @@ using namespace std;
 
 
 fstream file;
-string road, groupAddHex, lineAddHex, lineName, baseAddres;
-string tabGroup[3] = {"hgroup.", "rgroup", "group."};
-string tabLine[2] = {"hide.", "line."};
+string road, groupAddHex, baseAddres;
 string lineAddTab[44];   //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
 string lineNameTab[44];  //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
-int max_counter, counter = 1;
+int max_counter;
 
+void allRegisterTabel ();
 void searchRegister(string *fileTab,int current_line,string baseOffset);
 string fullAdd(string groupOff, string lineOff);
+string decToHex(string decAdd);
+int hexToDec(string hexAdd);
 
 int main(){
+    int choice;
+    cout << " ____________________________________"<< endl;
+    cout << "|               MENU                 |" << endl;
+    cout << "|____________________________________|" << endl;
+    cout << "|    1 - Get table with registers    |" << endl;
+    cout << "|____________________________________|" << endl;
+    cout << "Select operation: ";
+    cin >> choice;
+
+    switch(choice){
+
+        case 1:
+            system("cls");
+            allRegisterTabel();
+        break;
+        default:
+            cout << "---Wrong choice!---" << endl;
+            system("pause");
+            system("cls");
+            main();
+         break;
+    }
+
+    return 0;
+}
+
+void allRegisterTabel(){
+    string line;
+    long int baseAddressDec;
     cout << "Base address: ";
     cin >> baseAddres;
 
-    string line, fileLocation = "";
-    bool tbreak =false;
-
-    //cin >> fileLocation;
+    for (int i = 2; i<baseAddres.length();i++){
+        if (!isxdigit (baseAddres[i])){
+            cout << "---Wrong base address!---" << endl;
+            system("pause");
+            system("cls");
+            cout << "Base address: ";
+            cin >> baseAddres;
+        }
+    }
 
     file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
-    //file.open(fileLocation, ios::in);
 
     // zrobiæ try/catch
     if(file.good()==false){
@@ -54,8 +88,7 @@ int main(){
 
     for(int j = 0; j<max_counter; j++){
 
-        if(fileTab[j].find("hgroup.")!=string::npos)
-{
+        if(fileTab[j].find("hgroup.")!=string::npos){
             fileTab[j] = fileTab[j].substr(fileTab[j].find("hgroup"),fileTab[j].length());
             groupAddHex = fileTab[j].substr(fileTab[j].find("0x"),fileTab[j].find("++")-fileTab[j].find("0x"));
             searchRegister(fileTab,j,groupAddHex);
@@ -71,13 +104,12 @@ int main(){
             searchRegister(fileTab,j,groupAddHex);
         }
     }
-
+    /*
     //! Output results
-    //!for (int i = 0; i <sizeof(lineAddTab)/sizeof(string);i++){
-    //!    cout << lineAddTab[i] << " - " << lineNameTab[i]<<endl;
-    //!}
-
-    return 0;
+    for (int i = 0; i <sizeof(lineAddTab)/sizeof(string);i++){
+        cout << lineAddTab[i] << " - " << lineNameTab[i]<<endl;
+    }
+    */
 }
 
 void searchRegister(string *fileTab,int current_Line, string baseOffset){
@@ -134,5 +166,26 @@ string fullAdd(string groupOff, string lineOff){
     ss3 >> fullAdd;
 
     return fullAdd;
-    return 0;
+}
+
+int hexToDec(string hexAdd){
+    int decAdd;
+    std::stringstream ss;
+
+
+    ss << std::hex << hexAdd;
+    ss >> decAdd;
+
+    return decAdd;
+}
+
+string decToHex(string decAdd){
+    string hexAdd;
+    std::stringstream ss;
+
+
+    ss << std::dec << decAdd;
+    ss >> hexAdd;
+
+    return hexAdd;
 }

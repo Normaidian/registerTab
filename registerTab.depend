@@ -1,8 +1,35 @@
 # depslib dependency file v1.0
-1519843765 source:e:\c++\registertab\main.cpp
+1523383751 source:e:\c++\registertab\main.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
 	<string>
 	<sstream>
+	<list>
+	"register.h"
+
+1523389008 source:e:\c++\registertab\register.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	"register.h"
+
+1523383338 e:\c++\registertab\register.h
+	<iostream>
+	"group.h"
+
+1521564378 e:\c++\registertab\register.cpp
+	<iostream>
+	"register.h"
+
+1522434079 e:\c++\registertab\group.h
+	<iostream>
+
+1523384500 source:e:\c++\registertab\group.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	"group.h"
 

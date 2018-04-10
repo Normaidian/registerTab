@@ -3,136 +3,129 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include <list>
+#include "register.h"
 
 // nalezy dynamicznie tworzyc wielkosc tablic lineNameTab[] oraz lineAddTab[].
 // NEXT: funkcja obsługująca for'y (tworzenie odpowiedniej ilości rejestrów)
+// IN PROGRESS: funkcja drukująca wiersze
 
 using namespace std;
 
 
 fstream file;
-string road, groupAddHex, lineAddHex, lineName, baseAddres;
-string tabGroup[3] = {"hgroup.", "rgroup", "group."};
-string tabLine[2] = {"hide.", "line."};
-string lineAddTab[44];   //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
-string lineNameTab[44];  //  TUTAJ TZEBA CHYBA ZASTOSOWAC WSKAZNIKI
-int max_counter, counter = 1;
+string road;
+int width;
+int max_counter;
+bool insideGroup = false;
 
+void allRegisterTabel();
 void searchRegister(string *fileTab,int current_line,string baseOffset);
+void printRow(string registerAddress, string registerName, string registerOffset, string registerSize);
 string fullAdd(string groupOff, string lineOff);
+string decToHex(string decAdd);
+int hexToDec(string hexAdd);
+
+string file_location = "E:/Users/Normaidian/Desktop/intc.ph";
+Register r;
+Group g;
 
 int main(){
-    cout << "Base address: ";
-    cin >> baseAddres;
+    int choice;
 
-    string line, fileLocation = "";
-    bool tbreak =false;
+    cout << " ____________________________________"<< endl;
+    cout << "|               MENU                 |" << endl;
+    cout << "|____________________________________|" << endl;
+    cout << "|    1 - Get table with registers    |" << endl;
+    cout << "|____________________________________|" << endl;
+    cout << "Select operation: ";
+    cin >> choice;
 
-    //cin >> fileLocation;
+    switch(choice){
 
-    file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
-    //file.open(fileLocation, ios::in);
-
-    // zrobiæ try/catch
-    if(file.good()==false){
-        cout<< "Zly plik!" <<endl;
-        exit(0);
+        case 1:
+            system("cls");
+            allRegisterTabel();
+        break;
+        default:
+            cout << "---Wrong choice!---" << endl;
+            system("pause");
+            system("cls");
+            main();
+         break;
     }
-
-
-    while(getline(file, line)){
-        max_counter++;
-    }
-
-    file.close();
-
-    string fileTab[max_counter];
-
-    file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
-    for(int i = 0; i < max_counter; i++)        getline(file,fileTab[i]);
-    file.close();
-
-    for(int j = 0; j<max_counter; j++){
-
-        if(fileTab[j].find("hgroup.")!=string::npos)
-{
-            fileTab[j] = fileTab[j].substr(fileTab[j].find("hgroup"),fileTab[j].length());
-            groupAddHex = fileTab[j].substr(fileTab[j].find("0x"),fileTab[j].find("++")-fileTab[j].find("0x"));
-            searchRegister(fileTab,j,groupAddHex);
-        }
-        else if(fileTab[j].find("rgroup.")!=string::npos){
-            fileTab[j] = fileTab[j].substr(fileTab[j].find("rgroup"),fileTab[j].length());
-            groupAddHex = fileTab[j].substr(fileTab[j].find("0x"),fileTab[j].find("++")-fileTab[j].find("0x"));
-            searchRegister(fileTab,j,groupAddHex);
-        }
-        else if(fileTab[j].find("group.")!=string::npos){
-            fileTab[j] = fileTab[j].substr(fileTab[j].find("group"),fileTab[j].length());
-            groupAddHex = fileTab[j].substr(fileTab[j].find("0x"),fileTab[j].find("++")-fileTab[j].find("0x"));
-            searchRegister(fileTab,j,groupAddHex);
-        }
-    }
-
-    //! Output results
-    //!for (int i = 0; i <sizeof(lineAddTab)/sizeof(string);i++){
-    //!    cout << lineAddTab[i] << " - " << lineNameTab[i]<<endl;
-    //!}
 
     return 0;
 }
 
+void allRegisterTabel(){
+    //! variables declaration
+    fstream file;
+    int actual_line = 0;
+    string line;
+
+    //! File open
+    file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
+
+    if(!file.good()){
+        cout << "Wrong file!" << endl;
+        exit(0);
+    }
+
+    int prevLine;
+
+    //! Finding group
+    while(getline(file, line)){
+        actual_line++;
+        if(line.find("group.")!=string::npos){
+                g = g.searching(line);
+        }else if(line.find("width")!=string::npos){
+                if(line.find("0x")!=string::npos){
+                    width = hexToDec(line.substr(line.find("0x")+2,line.size()));
+                }else{
+                    width = atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str());
+                }
+        }else{
+            r.searching(line,g, width);
+        }
+    }
+}
+
+
+
+
 void searchRegister(string *fileTab,int current_Line, string baseOffset){
-
-    cout << " ______________________________________" << endl;
-    cout << "|   Register Name    |   Full Address  |" << endl;
-    cout << "|____________________|_________________|" << endl;
-
-
     for( int i = current_Line+1; i < max_counter ; i++){
 
-        if(fileTab[i].find("line.")!=string::npos){
-            string registerName = fileTab[i].substr(fileTab[i].find('"')+1,fileTab[i].find(",")-fileTab[i].find('"')-1);
-            string registerFullOffset = fullAdd(baseOffset,fileTab[i].substr(fileTab[i].find("0x"),fileTab[i].find("++")-fileTab[i].find("0x")));
+        if((fileTab[i].find("line.")!=string::npos)||(fileTab[i].find("hide")!=string::npos)){
 
-            int numOfSpace1 = (20 - registerName.length()), numOfSpace2 = (17 - registerFullOffset.length());
-            string space = "                                         ";
 
-            cout << "|" << space.substr(0,6) << registerName << space.substr(0,numOfSpace1-6) << "|";
-            cout << space.substr(0,3) << "0x" << registerFullOffset << space.substr(0,numOfSpace2-5) << "|" << endl;
-        }
-        else if(fileTab[i].find("hide")!=string::npos){
-            string registerName = fileTab[i].substr(fileTab[i].find('"')+1,fileTab[i].find(",")-fileTab[i].find('"')-1);
-            string registerFullOffset = fullAdd(baseOffset,fileTab[i].substr(fileTab[i].find("0x"),fileTab[i].find("++")-fileTab[i].find("0x")));
-
-            int numOfSpace1 = (20 - registerName.length()), numOfSpace2 = (17 - registerFullOffset.length());
-            string space = "                                         ";
-
-            cout << "|" << space.substr(0,6) << registerName << space.substr(0,numOfSpace1-6) << "|";
-            cout << space.substr(0,3) << "0x" << registerFullOffset << space.substr(0,numOfSpace2-5) << "|" << endl;
+            //printRow(registerAddress,registerName,registerOffset,registerRange);
         }
         else if(fileTab[i].find("group")!=string::npos){
             break;
         }
     }
-    cout << "|____________________|_________________|" << endl;
 }
 
-string fullAdd(string groupOff, string lineOff){
-    int baseAddDec, groupAddDec, lineAddDec;
-    string fullAdd;
-    std::stringstream ss, ss1, ss2, ss3;
+int hexToDec(string hexAdd){
+    int decAdd;
+    std::stringstream ss;
 
-    //! To Decimal
-    ss << std::hex << baseAddres;
-    ss >> baseAddDec;
-    ss1 << std::hex << groupOff;
-    ss1 >> groupAddDec;
-    ss2 << std::hex << lineOff;
-    ss2 >> lineAddDec;
 
-    //! Sum of decimal virables to Hexadecimal
-    ss3 << std::hex << baseAddDec + groupAddDec + lineAddDec;
-    ss3 >> fullAdd;
+    ss << std::hex << hexAdd;
+    ss >> decAdd;
 
-    return fullAdd;
-    return 0;
+    return decAdd;
+}
+
+string decToHex(string decAdd){
+    string hexAdd;
+    std::stringstream ss;
+
+
+    ss << std::dec << decAdd;
+    ss >> hexAdd;
+
+    return hexAdd;
 }

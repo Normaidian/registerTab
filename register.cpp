@@ -13,20 +13,20 @@ Register Register::searching(string line, Group g, int width){
 
     if(line.find("line.")!=string::npos){
         line = line.substr(line.find("line."),line.size());
-        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);
-        r.access = g.access;
-        r.offset = line.substr(line.find("0x"),line.find('"')-1-line.find("0x"));
-        r.address = g.offset;
-        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));  // Group range
+        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);     //! Line name
+        r.access = g.access;                                                        //! Line access
+        r.offset = line.substr(line.find("0x"),line.find('"')-1-line.find("0x"));   //! Line offset
+        r.address = g.offset;                                                       //! Line address
+        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));      //! Line range
 
         print(width,r);
     }else if(line.find("hide.")!=string::npos){
         line = line.substr(line.find("hide."),line.size());
-        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);
-        r.access = g.access;
-        r.offset = line.substr(line.find("0x"),line.find('"')-line.find("0x"));
-        r.address = g.offset;
-        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));  // Group range
+        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);     //! Line name
+        r.access = g.access;                                                        //! Line access
+        r.offset = line.substr(line.find("0x"),line.find('"')-line.find("0x"));     //! Line offset
+        r.address = g.offset;                                                       //! Line address
+        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));      //! Line range
 
         print(width,r);
     }
@@ -36,6 +36,7 @@ Register Register::searching(string line, Group g, int width){
 void Register::print(int width, Register r){
     string str, floor;
 
+    //! Created string with blank space and floor equal in length of name column
     if (width > 23){
         for(int i = 0;i < width+6 ; i++){
             str = str + " ";

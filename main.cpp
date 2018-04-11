@@ -6,27 +6,19 @@
 #include <list>
 #include "register.h"
 
-// nalezy dynamicznie tworzyc wielkosc tablic lineNameTab[] oraz lineAddTab[].
-// NEXT: funkcja obsługująca for'y (tworzenie odpowiedniej ilości rejestrów)
-// IN PROGRESS: funkcja drukująca wiersze
+// NEXT: funkcja obsługująca for'y (tworzenie odpowiedniej ilości rejestrów),
+//                           ify   (wypisująca dany rejestr tylko raz)
+//                           parametry z pliku *.p (wstawiajacy parametr za %(*))
 
 using namespace std;
 
-
 fstream file;
-string road;
 int width;
-int max_counter;
-bool insideGroup = false;
 
 void allRegisterTabel();
-void searchRegister(string *fileTab,int current_line,string baseOffset);
-void printRow(string registerAddress, string registerName, string registerOffset, string registerSize);
-string fullAdd(string groupOff, string lineOff);
 string decToHex(string decAdd);
 int hexToDec(string hexAdd);
 
-string file_location = "E:/Users/Normaidian/Desktop/intc.ph";
 Register r;
 Group g;
 
@@ -74,36 +66,22 @@ void allRegisterTabel(){
 
     int prevLine;
 
-    //! Finding group
     while(getline(file, line)){
         actual_line++;
-        if(line.find("group.")!=string::npos){
+        if(line.find("group.")!=string::npos){              //! if in line is "*group*"
                 g = g.searching(line);
-        }else if(line.find("width")!=string::npos){
+        }else if(line.find("width")!=string::npos){         //! if in line is "*width*"
                 if(line.find("0x")!=string::npos){
-                    width = hexToDec(line.substr(line.find("0x")+2,line.size()));
+                    if(hexToDec(line.substr(line.find("0x")+2,line.size())) > width){
+                        width = hexToDec(line.substr(line.find("0x")+2,line.size()));
+                    }
                 }else{
-                    width = atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str());
+                    if(atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str()) > width){
+                        width = atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str());
+                    }
                 }
-        }else{
+        }else{                                              //! in other lines searching "*line*" and "*hide*"
             r.searching(line,g, width);
-        }
-    }
-}
-
-
-
-
-void searchRegister(string *fileTab,int current_Line, string baseOffset){
-    for( int i = current_Line+1; i < max_counter ; i++){
-
-        if((fileTab[i].find("line.")!=string::npos)||(fileTab[i].find("hide")!=string::npos)){
-
-
-            //printRow(registerAddress,registerName,registerOffset,registerRange);
-        }
-        else if(fileTab[i].find("group")!=string::npos){
-            break;
         }
     }
 }

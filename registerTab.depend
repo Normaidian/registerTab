@@ -33,3 +33,24 @@
 	<string>
 	"group.h"
 
+1523431375 source:c:\users\pracownik\documents\github\registertab\group.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	"group.h"
+
+1523430809 c:\users\pracownik\documents\github\registertab\group.h
+	<iostream>
+
+1523431491 source:c:\users\pracownik\documents\github\registertab\register.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	"register.h"
+
+1523430809 c:\users\pracownik\documents\github\registertab\register.h
+	<iostream>
+	"group.h"
+

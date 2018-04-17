@@ -13,6 +13,7 @@ using namespace std;
 
 fstream file;
 int width;
+string baseAddress;
 
 void allRegisterTabel();
 string decToHex(string decAdd);
@@ -32,11 +33,32 @@ int main(){
     cout << "Select operation: ";
     cin >> choice;
 
-    switch(choice){
+    int counter = 0;
 
+    switch(choice){
         case 1:
-            system("cls");
-            allRegisterTabel();
+            cout << "Base address: ";
+            cin >> baseAddress;
+
+
+            for (int i = 2; i < baseAddress.length();i++){
+                char c = baseAddress[i];
+                if(isxdigit(c)){
+                    counter++;
+                }else{
+                    break;
+                }
+            }
+
+            if (counter == baseAddress.length()-2){
+                system("cls");
+                allRegisterTabel();
+            }else{
+                cout << "---Wrong base address!---" << endl;
+                system("pause");
+                system("cls");
+                main();
+            }
         break;
         default:
             cout << "---Wrong choice!---" << endl;

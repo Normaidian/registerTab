@@ -7,7 +7,6 @@
 #include "register.h"
 
 // NEXT: funkcja obsługująca for'y (tworzenie odpowiedniej ilości rejestrów),
-//                           ify   (wypisująca dany rejestr tylko raz)
 //                           parametry z pliku *.p (wstawiajacy parametr za %(*))
 
 using namespace std;
@@ -53,8 +52,8 @@ int main(){
 void allRegisterTabel(){
     //! variables declaration
     fstream file;
-    int actual_line = 0;
     string line;
+    bool insideIf = false, repeat = false;
 
     //! File open
     file.open("E:/Users/Normaidian/Desktop/intc.ph", ios::in);
@@ -64,26 +63,40 @@ void allRegisterTabel(){
         exit(0);
     }
 
-    int prevLine;
-
     while(getline(file, line)){
-        actual_line++;
-        if(line.find("group.")!=string::npos){              //! if in line is "*group*"
+        if((line.find("group.")!=string::npos)&&(repeat==false)){              //! if in line is "*group*"
                 g = g.searching(line);
-        }else if(line.find("width")!=string::npos){         //! if in line is "*width*"
-                if(line.find("0x")!=string::npos){
-                    if(hexToDec(line.substr(line.find("0x")+2,line.size())) > width){
-                        width = hexToDec(line.substr(line.find("0x")+2,line.size()));
-                    }
-                }else{
-                    if(atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str()) > width){
-                        width = atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str());
-                    }
+        }else if(line.find("width")!=string::npos){                             //! if in line is "*width*"
+            if(line.find("0x")!=string::npos){
+                if(hexToDec(line.substr(line.find("0x")+2,line.size())) > width){
+                    width = hexToDec(line.substr(line.find("0x")+2,line.size()));
                 }
+            }else{
+                if(atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str()) > width){
+                    width = atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str());
+                }
+            }
+
+            bool *wskaznik = &r.first_print;
+            *wskaznik = true;
+        }else if((line.find("if")!=string::npos)||(insideIf == true)){
+                insideIf = true;
+
+                 if(line.find("endif")!=string::npos){
+                    insideIf = false;
+                    repeat = false;
+                 }else if((line.find("else")!=string::npos)||(line.find("elif")!=string::npos)||(repeat == true)){
+                     repeat = true;
+                 }else{
+                    r.searching(line,g, width,insideIf);
+                 }
         }else{                                              //! in other lines searching "*line*" and "*hide*"
-            r.searching(line,g, width);
+            r.searching(line,g, width, insideIf);
         }
     }
+
+    cout << endl << "Comments:" << endl;
+    cout << "    1. Registers with 2 stars (**) after name are inside if, sif or %if conditions." << endl;
 }
 
 int hexToDec(string hexAdd){

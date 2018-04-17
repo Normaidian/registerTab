@@ -2,13 +2,12 @@
 #include <fstream>
 #include <cstdlib>
 #include <string>
+#include <sstream>
 #include "register.h"
 
 using namespace std;
 
-bool first_print = true;
-
-Register Register::searching(string line, Group g, int width){
+void Register::searching(string line, Group g, int width, bool insideIf){
     Register r;
 
     if(line.find("line.")!=string::npos){
@@ -19,18 +18,26 @@ Register Register::searching(string line, Group g, int width){
         r.address = g.offset;                                                       //! Line address
         r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));      //! Line range
 
+        if (insideIf == true){
+            r.name = r.name + "**";
+        }
+
         print(width,r);
     }else if(line.find("hide.")!=string::npos){
         line = line.substr(line.find("hide."),line.size());
         r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);     //! Line name
         r.access = g.access;                                                        //! Line access
         r.offset = line.substr(line.find("0x"),line.find('"')-line.find("0x"));     //! Line offset
-        r.address = g.offset;                                                       //! Line address
+        int adres = hexToDec(g.offset) + hexToDec(r.offset);
+        r.address = decToHex(adres);                                                       //! Line address
         r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));      //! Line range
+
+        if (insideIf == true){
+            r.name = r.name + "**";
+        }
 
         print(width,r);
     }
-    return r;
 }
 
 void Register::print(int width, Register r){

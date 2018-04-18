@@ -41,17 +41,27 @@
 	<string>
 	"group.h"
 
-1523430809 c:\users\pracownik\documents\github\registertab\group.h
+1524031806 c:\users\pracownik\documents\github\registertab\group.h
 	<iostream>
 
-1523431491 source:c:\users\pracownik\documents\github\registertab\register.cpp
+1524031648 source:c:\users\pracownik\documents\github\registertab\register.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
 	<string>
+	<sstream>
 	"register.h"
 
-1523430809 c:\users\pracownik\documents\github\registertab\register.h
+1524031818 c:\users\pracownik\documents\github\registertab\register.h
 	<iostream>
 	"group.h"
+
+1524032015 source:c:\users\pracownik\documents\github\registertab\main.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	<sstream>
+	<list>
+	"register.h"
 

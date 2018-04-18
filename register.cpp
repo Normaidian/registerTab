@@ -7,16 +7,16 @@
 
 using namespace std;
 
-void Register::searching(string line, Group g, int width, bool insideIf){
+void Register::searching(string line, Group g, int width,string baseAddress, bool insideIf){
     Register r;
 
     if(line.find("line.")!=string::npos){
         line = line.substr(line.find("line."),line.size());
-        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);     //! Line name
-        r.access = g.access;                                                        //! Line access
-        r.offset = line.substr(line.find("0x"),line.find('"')-1-line.find("0x"));   //! Line offset
-        r.address = g.offset;                                                       //! Line address
-        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));      //! Line range
+        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);                                                     //! Line name
+        r.access = g.access;                                                                                                        //! Line access
+        r.offset = "0x" + decToHex(hexToDec(line.substr(line.find("0x"),line.find('"')-1-line.find("0x")))+hexToDec(g.offset));     //! Line offset
+        r.address =  "0x" + decToHex(hexToDec(r.offset) + hexToDec(baseAddress));                                                   //! Line address
+        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));                                                      //! Line range
 
         if (insideIf == true){
             r.name = r.name + "**";
@@ -25,12 +25,11 @@ void Register::searching(string line, Group g, int width, bool insideIf){
         print(width,r);
     }else if(line.find("hide.")!=string::npos){
         line = line.substr(line.find("hide."),line.size());
-        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);     //! Line name
-        r.access = g.access;                                                        //! Line access
-        r.offset = line.substr(line.find("0x"),line.find('"')-line.find("0x"));     //! Line offset
-        int adres = hexToDec(g.offset) + hexToDec(r.offset);
-        r.address = decToHex(adres);                                                       //! Line address
-        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));      //! Line range
+        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);                                                     //! Line name
+        r.access = g.access;                                                                                                        //! Line access
+        r.offset = "0x" + decToHex(hexToDec(line.substr(line.find("0x"),line.find('"')-1-line.find("0x")))+hexToDec(g.offset));     //! Line offset
+        r.address = "0x" + decToHex( hexToDec(r.offset) + hexToDec(baseAddress));                                                   //! Line address
+        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));                                                      //! Line range
 
         if (insideIf == true){
             r.name = r.name + "**";

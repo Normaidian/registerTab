@@ -10,5 +10,5 @@ public:
     string access;
 
 
-    Group searching(string line);
+    Group searching(string line);       //! Searching group in line from file
 };

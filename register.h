@@ -14,27 +14,28 @@ public:
     string range;
     string access;
 
-    int hexToDec(string hexAdd){
-    int decAdd;
-    std::stringstream ss;
+    int hexToDec(string hexAdd){                                                            //! Convert hex number to decimal number
+        int decAdd;
+        std::stringstream ss;
 
 
-    ss << std::hex << hexAdd;
-    ss >> decAdd;
+        ss << std::hex << hexAdd;
+        ss >> decAdd;
 
-    return decAdd;
-}
+        return decAdd;
+    }
 
-    string decToHex(int decAdd){
-    string hexAdd;
-    std::stringstream ss;
+    string decToHex(int decAdd){                                                            //! Convert decimal number to hex number
+        string hexAdd;
+        std::stringstream ss;
 
 
-    ss << std::dec << decAdd;
-    ss >> hexAdd;
+        ss << std::hex << decAdd;
+        ss >> hexAdd;
 
-    return hexAdd;
-}
-    void searching(string line, Group g, int width, bool insideIf);
-    void print(int width,Register r);
+        return hexAdd;
+    }
+
+    void searching(string line, Group g, int width, string baseAddress, bool insideIf);     //! Searching registers in line from file
+    void print(int width,Register r);                                                       //! Printed row in console
 };

@@ -61,16 +61,18 @@ void allRegisterTabel(){
     string line;
     bool insideIf = false, repeat = false;
 
-    cout << "File address: ";
-    cin >> fileAddress;
+    do{
+        cout << "File address: ";
+        cin >> fileAddress;
 
-    //! Open file
-    file.open(fileAddress.c_str(), ios::in);
+        file.open(fileAddress.c_str(), ios::in);
 
-    if(!file.good()){
-        cout << "---Wrong file!---" << endl;
-        exit(0);
-    }
+        if(!file.good()){
+            cout << "---Wrong base address!---" << endl;
+        }
+    }while(!file.good());
+
+
 
     cout << "Base address: ";
     cin >> baseAddress;

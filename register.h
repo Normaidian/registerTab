@@ -18,7 +18,6 @@ public:
         int decAdd;
         std::stringstream ss;
 
-
         ss << std::hex << hexAdd;
         ss >> decAdd;
 
@@ -28,7 +27,6 @@ public:
     string decToHex(int decAdd){                                                            //! Convert decimal number to hex number
         string hexAdd;
         std::stringstream ss;
-
 
         ss << std::hex << decAdd;
         ss >> hexAdd;

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1523995731 source:e:\c++\registertab\main.cpp
+1523989552 source:e:\c++\registertab\main.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
@@ -41,17 +41,27 @@
 	<string>
 	"group.h"
 
-1523430809 c:\users\pracownik\documents\github\registertab\group.h
+1524031806 c:\users\pracownik\documents\github\registertab\group.h
 	<iostream>
 
-1523431491 source:c:\users\pracownik\documents\github\registertab\register.cpp
+1524035347 source:c:\users\pracownik\documents\github\registertab\register.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
 	<string>
+	<sstream>
 	"register.h"
 
-1523430809 c:\users\pracownik\documents\github\registertab\register.h
+1524034891 c:\users\pracownik\documents\github\registertab\register.h
 	<iostream>
 	"group.h"
+
+1524908682 source:c:\users\pracownik\documents\github\registertab\main.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	<sstream>
+	<list>
+	"register.h"
 

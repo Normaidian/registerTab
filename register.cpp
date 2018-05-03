@@ -75,3 +75,36 @@ void Register::print(int width, Register r){
     cout << str.substr(0,6) << r.range << str.substr(0,15-r.range.length()-6) << "|" << endl;                               //! print Register range
     cout << "|" << floor << "|________________________|_____________________|________________|_______________|" << endl;
 }
+
+void Register::forOperations(string line, string tempForLine, Group g, int width, string baseAddress, bool insideIf){
+    int numberOfParam = 0;
+    string tempLine = tempForLine;
+
+    while(!tempLine.empty()){
+        if(tempLine.find(")") != string::npos){
+            numberOfParam++;
+            tempLine = tempLine.substr(tempLine.find(")")+1,tempLine.size());
+        }
+    }
+
+    int iterations, numberOfCell = 0;
+    string tabParam[numberOfParam-1], tabJump[numberOfParam-1];
+
+    while(!tempForLine.empty()){
+        string param = tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1);
+
+        if (param.find(",") != string::npos){
+            tabParam[numberOfCell] = param.substr(0,param.find(","));
+            tabJump[numberOfCell] = param.substr(param.find(",")+1,param.size());
+            numberOfCell++;
+        }else{
+            iterations = atoi(param.c_str());
+        }
+
+        tempForLine = tempForLine.substr(tempForLine.find(")")+1,tempForLine.size());
+    }
+
+    for (int i = 0; i < numberOfParam-1;i++){
+        cout << i << ". Param: " << tabParam[i] << " Jump: " << tabJump[i] << endl;
+    }
+}

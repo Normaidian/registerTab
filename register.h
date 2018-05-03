@@ -36,4 +36,5 @@ public:
 
     void searching(string line, Group g, int width, string baseAddress, bool insideIf);     //! Searching registers in line from file
     void print(int width,Register r);                                                       //! Printed row in console
+    void forOperations(string line, string tempForLine, Group g, int width, string baseAddress, bool insideIf);
 };

@@ -13,7 +13,7 @@ using namespace std;
 
 fstream file;
 int width;
-string fileAddress, baseAddress;
+string fileAddress, baseAddress, tempForLine;
 
 void allRegisterTabel();
 string decToHex(string decAdd);
@@ -31,7 +31,7 @@ int main(){
     cout << "|____________________________________|" << endl;
     cout << "|    1 - Get table with registers    |" << endl;
     cout << "|____________________________________|" << endl;
-    cout << "|    9 - Exit                        |" << endl;
+    cout << "|    0 - Exit                        |" << endl;
     cout << "|____________________________________|" << endl;
     cout << "Select operation: ";
     cin >> choice;
@@ -41,7 +41,7 @@ int main(){
         case 1:
             allRegisterTabel();
         break;
-        case 9:
+        case 0:
             exit(0);
         break;
         default:
@@ -59,9 +59,9 @@ void allRegisterTabel(){
     //! Variables declaration
     fstream file;
     string line;
-    bool insideIf = false, repeat = false;
+    bool insideIf = false, insideIfElse = false, insideFor = false;
 
-    do{
+/*    do{
         cout << "File address: ";
         cin >> fileAddress;
 
@@ -76,6 +76,16 @@ void allRegisterTabel(){
 
     cout << "Base address: ";
     cin >> baseAddress;
+*/
+
+//! FOR testS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    fileAddress = "E:/Users/Normaidian/Desktop/intc.ph";
+
+    file.open(fileAddress.c_str(),ios::in);
+
+    baseAddress = "0x123456";
+/////////////////////////////////////////////////////////////////////////
+
 
     //! Checking corrections of base address
     for (int i = 2; i < baseAddress.length()-2;i++){
@@ -90,7 +100,7 @@ void allRegisterTabel(){
     system("cls");
 
     while(getline(file, line)){
-        if((line.find("group.")!=string::npos)&&(repeat==false)){                       //! if in line is "*group*"
+        if((line.find("group.")!=string::npos)&&(insideIfElse==false)){                       //! if in line is "*group*"
                 g = g.searching(line);
         }else if(line.find("width")!=string::npos){                                     //! if in line is "*width*"
             if(line.find("0x")!=string::npos){
@@ -105,19 +115,28 @@ void allRegisterTabel(){
 
             bool *pointer = &r.first_print;
             *pointer = true;
-        }else if((line.find("if")!=string::npos)||(insideIf == true)){                  //! id inf line is "*if*"
-                insideIf = true;
+        }else if((line.find("if")!=string::npos)||(insideIf == true)){                  //! if in line is "*if*"
+//                insideIf = true;
 
-                 if(line.find("endif")!=string::npos){
-                    insideIf = false;
-                    repeat = false;
-                 }else if((line.find("else")!=string::npos)||(line.find("elif")!=string::npos)||(repeat == true)){
-                     repeat = true;
-                 }else{
-                    r.searching(line,g, width, baseAddress, insideIf);
-                 }
+                // if(line.find("endif")!=string::npos){
+              //      insideIf = false;
+            //        insideIfElse = false;
+          //       }else if((line.find("else")!=string::npos)||(line.find("elif")!=string::npos)){
+        //             insideIfElse = true;
+      //           }else{
+    //                r.searching(line,g, width, baseAddress, insideIf);
+  //               }
+        }else if((line.find("%for")!=string::npos)||(insideFor == true)){                  //! if in line is "*%for*"
+            if(line.find("%for")!=string::npos){
+                tempForLine = line;
+                insideFor = true;
+            }else if(line.find("%enfor") != string::npos){
+                insideFor = false;
+            }else if(line.find("line.")!=string::npos){
+                r.forOperations(line, tempForLine,g,width,baseAddress,insideIf);
+            }
         }else{                                                                          //! in other lines searching "*line*" and "*hide*"
-            r.searching(line,g, width, baseAddress, insideIf);
+//            r.searching(line,g, width, baseAddress, insideIf);
         }
     }
 

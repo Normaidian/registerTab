@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1523383751 source:e:\c++\registertab\main.cpp
+1523989552 source:e:\c++\registertab\main.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
@@ -8,14 +8,15 @@
 	<list>
 	"register.h"
 
-1523389008 source:e:\c++\registertab\register.cpp
+1523990561 source:e:\c++\registertab\register.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
 	<string>
+	<sstream>
 	"register.h"
 
-1523383338 e:\c++\registertab\register.h
+1523990549 e:\c++\registertab\register.h
 	<iostream>
 	"group.h"
 
@@ -23,10 +24,10 @@
 	<iostream>
 	"register.h"
 
-1522434079 e:\c++\registertab\group.h
+1523983252 e:\c++\registertab\group.h
 	<iostream>
 
-1523384500 source:e:\c++\registertab\group.cpp
+1523983252 source:e:\c++\registertab\group.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
@@ -40,17 +41,27 @@
 	<string>
 	"group.h"
 
-1523430809 c:\users\pracownik\documents\github\registertab\group.h
+1524031806 c:\users\pracownik\documents\github\registertab\group.h
 	<iostream>
 
-1523431491 source:c:\users\pracownik\documents\github\registertab\register.cpp
+1524035347 source:c:\users\pracownik\documents\github\registertab\register.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
 	<string>
+	<sstream>
 	"register.h"
 
-1523430809 c:\users\pracownik\documents\github\registertab\register.h
+1524034891 c:\users\pracownik\documents\github\registertab\register.h
 	<iostream>
 	"group.h"
+
+1524908682 source:c:\users\pracownik\documents\github\registertab\main.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	<sstream>
+	<list>
+	"register.h"
 

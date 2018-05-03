@@ -2,35 +2,41 @@
 #include <fstream>
 #include <cstdlib>
 #include <string>
+#include <sstream>
 #include "register.h"
 
 using namespace std;
 
-bool first_print = true;
-
-Register Register::searching(string line, Group g, int width){
+void Register::searching(string line, Group g, int width,string baseAddress, bool insideIf){
     Register r;
 
     if(line.find("line.")!=string::npos){
         line = line.substr(line.find("line."),line.size());
-        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);     //! Line name
-        r.access = g.access;                                                        //! Line access
-        r.offset = line.substr(line.find("0x"),line.find('"')-1-line.find("0x"));   //! Line offset
-        r.address = g.offset;                                                       //! Line address
-        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));      //! Line range
+        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);                                                     //! Line name
+        r.access = g.access;                                                                                                        //! Line access
+        r.offset = "0x" + decToHex(hexToDec(line.substr(line.find("0x"),line.find('"')-1-line.find("0x")))+hexToDec(g.offset));     //! Line offset
+        r.address =  "0x" + decToHex(hexToDec(r.offset) + hexToDec(baseAddress));                                                   //! Line address
+        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));                                                      //! Line range
+
+        if (insideIf == true){
+            r.name = r.name + "**";
+        }
 
         print(width,r);
     }else if(line.find("hide.")!=string::npos){
         line = line.substr(line.find("hide."),line.size());
-        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);     //! Line name
-        r.access = g.access;                                                        //! Line access
-        r.offset = line.substr(line.find("0x"),line.find('"')-line.find("0x"));     //! Line offset
-        r.address = g.offset;                                                       //! Line address
-        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));      //! Line range
+        r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);                                                     //! Line name
+        r.access = g.access;                                                                                                        //! Line access
+        r.offset = "0x" + decToHex(hexToDec(line.substr(line.find("0x"),line.find('"')-1-line.find("0x")))+hexToDec(g.offset));     //! Line offset
+        r.address = "0x" + decToHex( hexToDec(r.offset) + hexToDec(baseAddress));                                                   //! Line address
+        r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));                                                      //! Line range
+
+        if (insideIf == true){
+            r.name = r.name + "**";
+        }
 
         print(width,r);
     }
-    return r;
 }
 
 void Register::print(int width, Register r){

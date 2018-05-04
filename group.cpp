@@ -30,5 +30,6 @@ Group Group::searching(string line){
         g.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));     //! Group range
         g.access = "Read/Write (RW)";                                              //! Group access
     }
+
     return g;
 }

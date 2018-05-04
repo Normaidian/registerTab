@@ -13,7 +13,7 @@ using namespace std;
 
 fstream file;
 int width;
-string fileAddress, baseAddress, tempForLine;
+string fileAddress, baseAddress, tempForLine, tempGroupLine;
 
 void allRegisterTabel();
 string decToHex(string decAdd);
@@ -61,7 +61,7 @@ void allRegisterTabel(){
     string line;
     bool insideIf = false, insideIfElse = false, insideFor = false;
 
-/*    do{
+    do{
         cout << "File address: ";
         cin >> fileAddress;
 
@@ -76,16 +76,6 @@ void allRegisterTabel(){
 
     cout << "Base address: ";
     cin >> baseAddress;
-*/
-
-//! FOR testS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    fileAddress = "E:/Users/Normaidian/Desktop/intc.ph";
-
-    file.open(fileAddress.c_str(),ios::in);
-
-    baseAddress = "0x123456";
-/////////////////////////////////////////////////////////////////////////
-
 
     //! Checking corrections of base address
     for (int i = 2; i < baseAddress.length()-2;i++){
@@ -100,7 +90,7 @@ void allRegisterTabel(){
     system("cls");
 
     while(getline(file, line)){
-        if((line.find("group.")!=string::npos)&&(insideIfElse==false)){                       //! if in line is "*group*"
+        if((line.find("group.")!=string::npos)&&(insideIfElse==false)&&insideFor==false){                       //! if in line is "*group*"
                 g = g.searching(line);
         }else if(line.find("width")!=string::npos){                                     //! if in line is "*width*"
             if(line.find("0x")!=string::npos){
@@ -115,33 +105,44 @@ void allRegisterTabel(){
 
             bool *pointer = &r.first_print;
             *pointer = true;
-        }else if((line.find("if")!=string::npos)||(insideIf == true)){                  //! if in line is "*if*"
-//                insideIf = true;
-
-                // if(line.find("endif")!=string::npos){
-              //      insideIf = false;
-            //        insideIfElse = false;
-          //       }else if((line.find("else")!=string::npos)||(line.find("elif")!=string::npos)){
-        //             insideIfElse = true;
-      //           }else{
-    //                r.searching(line,g, width, baseAddress, insideIf);
-  //               }
         }else if((line.find("%for")!=string::npos)||(insideFor == true)){                  //! if in line is "*%for*"
             if(line.find("%for")!=string::npos){
                 tempForLine = line;
                 insideFor = true;
-            }else if(line.find("%enfor") != string::npos){
+            }else if(line.find("endif") != string::npos){
+                insideIf = false;
+                insideIfElse = false;
+            }else if(line.find("if") != string::npos){
+                insideIf = true;
+            }else if((line.find("else")!=string::npos)||(line.find("elif")!=string::npos)){
+                insideIfElse = true;
+            }else if(line.find("group") != string::npos){
+                tempGroupLine = line;
+            }else if((line.find("%endfor") != string::npos)){
                 insideFor = false;
-            }else if(line.find("line.")!=string::npos){
-                r.forOperations(line, tempForLine,g,width,baseAddress,insideIf);
+            }else if((line.find("line.")!=string::npos) && insideIfElse == false){
+                r.forOperations(line, tempForLine, tempGroupLine, width, baseAddress, insideIf, insideFor);
             }
+        }else if(((line.find("if")!=string::npos)||(insideIf == true))){                  //! if in line is "*if*"
+                insideIf = true;
+
+                 if(line.find("endif")!=string::npos){
+                    insideIf = false;
+                    insideIfElse = false;
+                 }else if((line.find("else")!=string::npos)||(line.find("elif")!=string::npos)){
+                     insideIfElse = true;
+                 }else if(insideIfElse == false){
+                    r.searching(line,g, width, baseAddress, insideIf, insideFor);
+                 }
         }else{                                                                          //! in other lines searching "*line*" and "*hide*"
-//            r.searching(line,g, width, baseAddress, insideIf);
+            r.searching(line,g, width, baseAddress, insideIf, insideFor);
         }
     }
 
     cout << endl << "Comments:" << endl;
-    cout << "    1. Registers with 2 stars (**) after name are inside if, sif or %if conditions." << endl;
+    cout << "    1. Registers with 1 stars (*) after name are inside for loop." << endl;
+    cout << "    2. Registers with 2 stars (**) after name are inside if, sif or %if conditions." << endl;
+    cout << "    3. Registers with 3 stars (***) after name are inside for loop and if, sif or %if conditions." << endl << endl;
 
 
     system("pause");

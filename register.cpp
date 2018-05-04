@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void Register::searching(string line, Group g, int width,string baseAddress, bool insideIf){
+void Register::searching(string line, Group g, int width,string baseAddress, bool insideIf, bool insideFor){
     Register r;
 
     if(line.find("line.")!=string::npos){
@@ -18,7 +18,11 @@ void Register::searching(string line, Group g, int width,string baseAddress, boo
         r.address =  "0x" + decToHex(hexToDec(r.offset) + hexToDec(baseAddress));                                                   //! Line address
         r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));                                                      //! Line range
 
-        if (insideIf == true){
+        if (insideIf == true && insideFor == true){
+            r.name = r.name + "***";
+        }else if(insideFor == true){
+            r.name = r.name + "*";
+        }else if (insideIf == true){
             r.name = r.name + "**";
         }
 
@@ -76,7 +80,7 @@ void Register::print(int width, Register r){
     cout << "|" << floor << "|________________________|_____________________|________________|_______________|" << endl;
 }
 
-void Register::forOperations(string line, string tempForLine, Group g, int width, string baseAddress, bool insideIf){
+void Register::forOperations(string line, string tempForLine, string tempGroupLine, int width, string baseAddress, bool insideIf, bool insideFor){
     int numberOfParam = 0;
     string tempLine = tempForLine;
 
@@ -87,24 +91,44 @@ void Register::forOperations(string line, string tempForLine, Group g, int width
         }
     }
 
-    int iterations, numberOfCell = 0;
-    string tabParam[numberOfParam-1], tabJump[numberOfParam-1];
+    int iterations = atoi(tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1).c_str());
+    tempForLine = tempForLine.substr(tempForLine.find(")")+1,tempForLine.size());
 
-    while(!tempForLine.empty()){
-        string param = tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1);
+    string tabValues[numberOfParam-1][iterations];
 
-        if (param.find(",") != string::npos){
-            tabParam[numberOfCell] = param.substr(0,param.find(","));
-            tabJump[numberOfCell] = param.substr(param.find(",")+1,param.size());
-            numberOfCell++;
-        }else{
-            iterations = atoi(param.c_str());
+    for(int i = 0; i < numberOfParam-1; i++){
+        string params = tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1);
+
+        tabValues[i][0] = params.substr(0,params.find(","));
+        string jump = params.substr(params.find(",")+1,params.size());
+
+        for(int j = 1; j < iterations; j++){
+            if(params.find("0x") != string::npos){
+                tabValues[i][j] ="0x" + decToHex(hexToDec(tabValues[i][j-1]) + hexToDec(jump));
+            }else if(params.find("list:") != string::npos){
+
+            }else{
+                tabValues[i][j] = toString(atoi(tabValues[i][j-1].c_str()) + atoi(jump.c_str()));
+            }
         }
 
         tempForLine = tempForLine.substr(tempForLine.find(")")+1,tempForLine.size());
     }
 
-    for (int i = 0; i < numberOfParam-1;i++){
-        cout << i << ". Param: " << tabParam[i] << " Jump: " << tabJump[i] << endl;
+    for(int j = 0; j < iterations; j++){
+        string tempLine = line;
+        string tempGroup = tempGroupLine;
+        for(int i = 1; i < numberOfParam; i++){
+            string param = "$" + toString(i);
+            while(tempLine.find(param) != string::npos){
+                tempLine = tempLine.replace(tempLine.find(param),2,tabValues[i-1][j]);
+            }
+            while(tempGroup.find(param) != string::npos){
+                tempGroup = tempGroup.replace(tempGroup.find(param),2,tabValues[i-1][j]);
+            }
+        }
+        Group g;
+        g = g.searching(tempGroup);
+        searching(tempLine,g,width,baseAddress,insideIf, insideFor);
     }
 }

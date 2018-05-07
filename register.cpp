@@ -101,12 +101,25 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
 
         tabValues[i][0] = params.substr(0,params.find(","));
         string jump = params.substr(params.find(",")+1,params.size());
+        bool insideList = false;
 
         for(int j = 1; j < iterations; j++){
             if(params.find("0x") != string::npos){
                 tabValues[i][j] ="0x" + decToHex(hexToDec(tabValues[i][j-1]) + hexToDec(jump));
-            }else if(params.find("list:") != string::npos){
+            }else if((params.find("list:") != string::npos)||insideList == true){
+                insideList = true;
 
+                if(j-1 == 0){
+                    tabValues[i][j-1] = params.substr(params.find(':\"')+1,params.find(",") - params.find(':"')-1);
+                }else if(j+1 == iterations){
+                    tabValues[i][j-1] = params.substr(0,params.find(','));
+                    tabValues[i][j] = params.substr(params.find(',')+1,params.find('"')-2);
+                    insideList = false;
+                }else{
+                    tabValues[i][j-1] = params.substr(0,params.find(','));
+                }
+
+                params = params.substr(params.find(",")+1,params.size());
             }else{
                 tabValues[i][j] = toString(atoi(tabValues[i][j-1].c_str()) + atoi(jump.c_str()));
             }

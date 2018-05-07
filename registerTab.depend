@@ -44,7 +44,7 @@
 1524031806 c:\users\pracownik\documents\github\registertab\group.h
 	<iostream>
 
-1525675571 source:c:\users\pracownik\documents\github\registertab\register.cpp
+1525683247 source:c:\users\pracownik\documents\github\registertab\register.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
@@ -52,11 +52,13 @@
 	<sstream>
 	"register.h"
 
-1525670151 c:\users\pracownik\documents\github\registertab\register.h
+1525701837 c:\users\pracownik\documents\github\registertab\register.h
 	<iostream>
+	<algorithm>
+	<string>
 	"group.h"
 
-1525670151 source:c:\users\pracownik\documents\github\registertab\main.cpp
+1525690592 source:c:\users\pracownik\documents\github\registertab\main.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>

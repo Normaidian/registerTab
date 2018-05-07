@@ -104,9 +104,8 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
         bool insideList = false;
 
         for(int j = 1; j < iterations; j++){
-            if(params.find("0x") != string::npos){
-                tabValues[i][j] ="0x" + decToHex(hexToDec(tabValues[i][j-1]) + hexToDec(jump));
-            }else if((params.find("list:") != string::npos)||insideList == true){
+
+            if((params.find("list:") != string::npos)||insideList == true){
                 insideList = true;
 
                 if(j-1 == 0){
@@ -120,6 +119,8 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
                 }
 
                 params = params.substr(params.find(",")+1,params.size());
+            }else if(params.find("0x") != string::npos){
+                tabValues[i][j] ="0x" + decToHex(hexToDec(tabValues[i][j-1]) + hexToDec(jump));
             }else{
                 tabValues[i][j] = toString(atoi(tabValues[i][j-1].c_str()) + atoi(jump.c_str()));
             }

@@ -68,7 +68,7 @@ void allRegisterTabel(){
         file.open(fileAddress.c_str(), ios::in);
 
         if(!file.good()){
-            cout << "---Wrong base address!---" << endl;
+            cout << "---Wrong file address!---" << endl;
         }
     }while(!file.good());
 

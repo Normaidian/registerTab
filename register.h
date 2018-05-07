@@ -1,4 +1,6 @@
 #include <iostream>
+#include <algorithm>
+#include <string>
 #include "group.h"
 
 using namespace std;
@@ -31,6 +33,7 @@ public:
         ss << std::hex << decAdd;
         ss >> hexAdd;
 
+        std::transform(hexAdd.begin(),hexAdd.end(),hexAdd.begin(), ::toupper);
         return hexAdd;
     }
 

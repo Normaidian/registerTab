@@ -47,7 +47,7 @@ public:
 
         return numberS;
     }
-    void searching(string line, Group g, int width, string baseAddress, bool insideIf, bool insideFor);     //! Searching registers in line from file
+    Register searching(string line, Group g, string baseAddress, bool insideIf, bool insideFor);     //! Searching registers in line from file
     void print(int width,Register r);                                                       //! Printed row in console
     void forOperations(string line, string tempForLine, string tempGroupLine, int width, string baseAddress, bool insideIf, bool insideFor);
 };

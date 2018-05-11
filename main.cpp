@@ -124,19 +124,19 @@ void allRegisterTabel(){
             }else if((line.find("line.")!=string::npos) && insideIfElse == false){
                 r.forOperations(line, tempForLine, tempGroupLine, width, baseAddress, insideIf, insideFor);
             }
-        }else if(((line.find("if ")!=string::npos)||(insideIf == true))){                  //! if in line is "*if*"
-                insideIf = true;
+   /*     }else if(((line.find("if ")!=string::npos)||(insideIf == true))){                  //! if in line is "*if*"
+            insideIf = true;
 
-                 if(line.find("endif")!=string::npos){
-                    insideIf = false;
-                    insideIfElse = false;
-                 }else if((line.find("else")!=string::npos)||(line.find("elif")!=string::npos)){
-                     insideIfElse = true;
-                 }else if(insideIfElse == false){
-                    r.searching(line,g, width, baseAddress, insideIf, insideFor);
-                 }
-        }else{                                                                          //! in other lines searching "*line*" and "*hide*"
-            r.searching(line,g, width, baseAddress, insideIf, insideFor);
+            if(line.find("endif")!=string::npos){
+                insideIf = false;
+                insideIfElse = false;
+            }else if((line.find("else")!=string::npos)||(line.find("elif")!=string::npos)){
+                insideIfElse = true;
+            }else if(insideIfElse == false){
+                r.print(width,r.searching(line,g, baseAddress, insideIf, insideFor));
+               }  */
+        }else if(((line.find("line.")!=string::npos)||(line.find("hide.")!=string::npos))){                                                                          //! in other lines searching "*line*" and "*hide*"
+            r.print(width,r.searching(line,g, baseAddress, insideIf, insideFor));
         }
     }
 

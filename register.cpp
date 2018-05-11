@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void Register::searching(string line, Group g, int width,string baseAddress, bool insideIf, bool insideFor){
+Register Register::searching(string line, Group g,string baseAddress, bool insideIf, bool insideFor){
     Register r;
 
     if(line.find("line.")!=string::npos){
@@ -26,7 +26,6 @@ void Register::searching(string line, Group g, int width,string baseAddress, boo
             r.name = r.name + "**";
         }
 
-        print(width,r);
     }else if(line.find("hide.")!=string::npos){
         line = line.substr(line.find("hide."),line.size());
         r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);                                                     //! Line name
@@ -38,9 +37,8 @@ void Register::searching(string line, Group g, int width,string baseAddress, boo
         if (insideIf == true){
             r.name = r.name + "**";
         }
-
-        print(width,r);
     }
+    return r;
 }
 
 void Register::print(int width, Register r){
@@ -143,6 +141,6 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
         }
         Group g;
         g = g.searching(tempGroup);
-        searching(tempLine,g,width,baseAddress,insideIf, insideFor);
+        print(width,searching(tempLine,g,baseAddress,insideIf, insideFor));
     }
 }

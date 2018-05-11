@@ -24,6 +24,7 @@ Group g;
 
 int main(){
     system("cls");
+    width = 0;
     int choice;
 
     cout << " ____________________________________"<< endl;
@@ -92,7 +93,7 @@ void allRegisterTabel(){
     while(getline(file, line)){
         if((line.find("group.")!=string::npos)&&(insideIfElse==false)&&insideFor==false){                       //! if in line is "*group*"
                 g = g.searching(line);
-        }else if(line.find("width")!=string::npos){                                     //! if in line is "*width*"
+        }else if(line.find("width ")!=string::npos){                                     //! if in line is "*width*"
             if(line.find("0x")!=string::npos){
                 if(r.hexToDec(line.substr(line.find("0x")+2,line.size())) > width){
                     width = r.hexToDec(line.substr(line.find("0x")+2,line.size()));
@@ -123,7 +124,7 @@ void allRegisterTabel(){
             }else if((line.find("line.")!=string::npos) && insideIfElse == false){
                 r.forOperations(line, tempForLine, tempGroupLine, width, baseAddress, insideIf, insideFor);
             }
-        }else if(((line.find("if")!=string::npos)||(insideIf == true))){                  //! if in line is "*if*"
+        }else if(((line.find("if ")!=string::npos)||(insideIf == true))){                  //! if in line is "*if*"
                 insideIf = true;
 
                  if(line.find("endif")!=string::npos){
@@ -144,7 +145,7 @@ void allRegisterTabel(){
     cout << "    2. Registers with 2 stars (**) after name are inside if, sif or %if conditions." << endl;
     cout << "    3. Registers with 3 stars (***) after name are inside for loop and if, sif or %if conditions." << endl << endl;
 
-
+    file.close();
     system("pause");
     main();
 }

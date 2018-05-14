@@ -82,7 +82,7 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
     int numberOfParam = 0;
     string tempLine = tempForLine;
 
-    while(!tempLine.empty()){
+    while(!tempLine.empty()){                                                                                                       //! Checking number of parameters
         if(tempLine.find(")") != string::npos){
             numberOfParam++;
             tempLine = tempLine.substr(tempLine.find(")")+1,tempLine.size());
@@ -94,7 +94,7 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
 
     string tabValues[numberOfParam-1][iterations];
 
-    for(int i = 0; i < numberOfParam-1; i++){
+    for(int i = 0; i < numberOfParam-1; i++){                                                                                       //! Creating table with parameters
         string params = tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1);
 
         tabValues[i][0] = params.substr(0,params.find(","));
@@ -127,7 +127,7 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
         tempForLine = tempForLine.substr(tempForLine.find(")")+1,tempForLine.size());
     }
 
-    for(int j = 0; j < iterations; j++){
+    for(int j = 0; j < iterations; j++){                                                                                            //! Replace the parameter number with its value
         string tempLine = line;
         string tempGroup = tempGroupLine;
         for(int i = 1; i < numberOfParam; i++){

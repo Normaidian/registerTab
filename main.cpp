@@ -7,9 +7,6 @@
 #include <list>
 #include "register.h"
 
-// NEXT: funkcja obsługująca for'y (tworzenie odpowiedniej ilości rejestrów),
-//                           parametry z pliku *.p (wstawiajacy parametr za %(*))
-
 using namespace std;
 
 fstream file;
@@ -65,10 +62,9 @@ void allRegisterTabel(){
     string line;
     bool insideIf = false, insideIfElse = false, insideFor = false;
 
-    //! Checking corrections of file address
-    do{
+    do{                                                                                                                 //! Checking corrections of file address
         SetConsoleTextAttribute( hOut, 10 );
-        cout << "File address: ";
+        cout << endl << "File address: ";
         SetConsoleTextAttribute( hOut, 7);
         cin >> fileAddress;
 
@@ -77,6 +73,7 @@ void allRegisterTabel(){
         if(!file.good()){
             SetConsoleTextAttribute( hOut, 12);
             cout << "---Wrong file address!---" << endl;
+            SetConsoleTextAttribute( hOut, 7 );
             system("pause");
             system("cls");
             main();
@@ -90,19 +87,18 @@ void allRegisterTabel(){
     SetConsoleTextAttribute( hOut, 7 );
     cin >> baseAddress;
 
-    //! Checking corrections of base address
-    for (int i = 2; i < baseAddress.length()-2;i++){
+    for (int i = 2; i < baseAddress.length()-2;i++){                                                                    //! Checking corrections of base address
         if(!isxdigit(baseAddress[i])){
             SetConsoleTextAttribute( hOut, 12 );
             cout << "---Wrong base address!---" << endl;
+            SetConsoleTextAttribute( hOut, 7 );
             system("pause");
             system("cls");
             main();
         }
     }
 
-    //! Creating tab with values from *.p file
-    SetConsoleTextAttribute( hOut, 10 );
+    SetConsoleTextAttribute( hOut, 10 );                                                                                //! Creating tab with values from *.p file
     cout << "Number of values from file *.p: ";
     SetConsoleTextAttribute( hOut, 7 );
     cin >> numberOfParams;
@@ -122,8 +118,7 @@ void allRegisterTabel(){
 
     while(getline(file, line)){
 
-        //! replace the parameter number with its value
-        for (int i = 1; i <= numberOfParams; i++){
+        for (int i = 1; i <= numberOfParams; i++){                                                                      //! Replace the parameter number with its value
             string param = "%(" + r.toString(i) + ")";
 
             while(line.find(param) != string::npos){
@@ -175,6 +170,7 @@ void allRegisterTabel(){
     cout << "    1. Registers with 1 stars (*) after name are inside for loop." << endl;
     cout << "    2. Registers with 2 stars (**) after name are inside if, sif or %if conditions." << endl;
     cout << "    3. Registers with 3 stars (***) after name are inside for loop and if, sif or %if conditions." << endl << endl;
+    SetConsoleTextAttribute( hOut, 7 );
 
     file.close();
     system("pause");

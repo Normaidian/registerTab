@@ -37,7 +37,7 @@ public:
         return hexAdd;
     }
 
-    string toString(int numberI){
+    string toString(int numberI){                                                           //! Convert INT to STRING
         string numberS;
 
         std::stringstream ss;
@@ -47,7 +47,7 @@ public:
 
         return numberS;
     }
-    Register searching(string line, Group g, string baseAddress, bool insideIf, bool insideFor);     //! Searching registers in line from file
-    void print(int width,Register r);                                                       //! Printed row in console
-    void forOperations(string line, string tempForLine, string tempGroupLine, int width, string baseAddress, bool insideIf, bool insideFor);
+    Register searching(string line, Group g, string baseAddress, bool insideIf, bool insideFor);                                                    //! Searching registers in line from file
+    void print(int width,Register r);                                                                                                               //! Printed row in console
+    void forOperations(string line, string tempForLine, string tempGroupLine, int width, string baseAddress, bool insideIf, bool insideFor);        //! Creating registers from FOR
 };

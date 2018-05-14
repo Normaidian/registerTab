@@ -50,7 +50,7 @@
 	<sstream>
 	<algorithm>
 
-1526046288 source:c:\users\pracownik\documents\github\registertab\register.cpp
+1526276697 source:c:\users\pracownik\documents\github\registertab\register.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
@@ -58,7 +58,7 @@
 	<sstream>
 	"register.h"
 
-1526046239 c:\users\pracownik\documents\github\registertab\register.h
+1526275161 c:\users\pracownik\documents\github\registertab\register.h
 	<iostream>
 	<algorithm>
 	<string>

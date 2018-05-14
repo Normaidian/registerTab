@@ -73,3 +73,39 @@
 	<list>
 	"register.h"
 
+1526250338 source:c:\users\pracownik\downloads\registertab-4\group.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	"group.h"
+
+1526250338 c:\users\pracownik\downloads\registertab-4\group.h
+	<iostream>
+	<sstream>
+	<algorithm>
+
+1526284724 source:c:\users\pracownik\downloads\registertab-4\main.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	<sstream>
+	<windows.h>
+	<list>
+	"register.h"
+
+1526250338 c:\users\pracownik\downloads\registertab-4\register.h
+	<iostream>
+	<algorithm>
+	<string>
+	"group.h"
+
+1526284807 source:c:\users\pracownik\downloads\registertab-4\register.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<string>
+	<sstream>
+	"register.h"
+

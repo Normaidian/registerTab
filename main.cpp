@@ -54,11 +54,10 @@ int main(){
             break;
             default:
                 SetConsoleTextAttribute( hOut, 12 );
-                cout << "---Wrong choice---" << endl;
+                cout << "--Wrong choice---" << endl;
                 SetConsoleTextAttribute( hOut, 7 );
                 system("pause");
                 system("cls");
-                main();
             break;
         }
     }while(true);

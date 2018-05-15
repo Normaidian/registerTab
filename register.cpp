@@ -110,7 +110,7 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
         string jump = params.substr(params.find(",")+1,params.size());
         bool insideList = false;
 
-        for(int j = 1; j < iterations; j++){
+        for(int j = 1; j <= iterations; j++){
 
             if((params.find("list:") != string::npos)||insideList == true){
                 insideList = true;

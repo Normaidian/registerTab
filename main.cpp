@@ -12,10 +12,9 @@ using namespace std;
 fstream file;
 int width, numberOfParams = 0;
 string fileAddress, baseAddress, tempForLine, tempGroupLine;
+bool first_print;
 
 void allRegisterTabel();
-string decToHex(string decAdd);
-int hexToDec(string hexAdd);
 HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 Register r;
 Group g;
@@ -26,32 +25,43 @@ int main(){
     width = 0;
     int choice;
 
-    cout << " ____________________________________"<< endl;
-    cout << "|               MENU                 |" << endl;
-    cout << "|____________________________________|" << endl;
-    cout << "|    1 - Get table with registers    |" << endl;
-    cout << "|____________________________________|" << endl;
-    cout << "|    0 - Exit                        |" << endl;
-    cout << "|____________________________________|" << endl;
-    cout << "Select operation: ";
-    cin >> choice;
+    do{
+        cout << " ____________________________________"<< endl;
+        cout << "|               MENU                 |" << endl;
+        cout << "|____________________________________|" << endl;
+        cout << "|    1 - Get table with registers    |" << endl;
+        cout << "|____________________________________|" << endl;
+        cout << "|    0 - Exit                        |" << endl;
+        cout << "|____________________________________|" << endl;
+        cout << "Select operation: ";
+        cin >> choice;
 
-    switch(choice){
+        switch(choice){
 
-        case 1:
-            allRegisterTabel();
-        break;
-        case 0:
-            exit(0);
-        break;
-        default:
-            SetConsoleTextAttribute( hOut, 12);
-            cout << "---Wrong choice!---" << endl;
-            system("pause");
-            system("cls");
-            main();
-         break;
-    }
+            case 1:
+                try{
+                    allRegisterTabel();
+                }catch(std::logic_error &e){
+                    SetConsoleTextAttribute( hOut, 12 );
+                    cout << e.what() << endl;
+                    SetConsoleTextAttribute( hOut, 7 );
+                    system("pause");
+                    system("cls");
+                }
+            break;
+            case 0:
+                exit(0);
+            break;
+            default:
+                SetConsoleTextAttribute( hOut, 12 );
+                cout << "---Wrong choice---" << endl;
+                SetConsoleTextAttribute( hOut, 7 );
+                system("pause");
+                system("cls");
+                main();
+            break;
+        }
+    }while(true);
 
     return 0;
 }
@@ -71,12 +81,7 @@ void allRegisterTabel(){
         file.open(fileAddress.c_str(), ios::in);
 
         if(!file.good()){
-            SetConsoleTextAttribute( hOut, 12);
-            cout << "---Wrong file address!---" << endl;
-            SetConsoleTextAttribute( hOut, 7 );
-            system("pause");
-            system("cls");
-            main();
+            throw(std::logic_error("---Wrong file address!---"));
         }
     }while(!file.good());
 
@@ -89,12 +94,7 @@ void allRegisterTabel(){
 
     for (int i = 2; i < baseAddress.length()-2;i++){                                                                    //! Checking corrections of base address
         if(!isxdigit(baseAddress[i])){
-            SetConsoleTextAttribute( hOut, 12 );
-            cout << "---Wrong base address!---" << endl;
-            SetConsoleTextAttribute( hOut, 7 );
-            system("pause");
-            system("cls");
-            main();
+            throw(std::logic_error("---Wrong base address!---"));
         }
     }
 
@@ -140,28 +140,32 @@ void allRegisterTabel(){
                 }
             }
 
-            bool *pointer = &r.first_print;
-            *pointer = true;
+            width = width+3;
+            //bool *pointer = &r.first_print;
+            //*pointer = true;
+            first_print = true;
         }else if(line.find("base ") != string::npos){
             baseAddress = line.substr(line.find("base ") + 5, line.size() - line.find("base ") + 5);
         }else if((line.find("%for") != string::npos)){                                                                  //! entry to for condition
-                tempForLine = line;
-                insideFor = true;
+            tempForLine = line;
+            insideFor = true;
         }else if((line.find("%endfor") != string::npos)){                                                               //! exit from for condition
-                insideFor = false;
+            insideFor = false;
         }else if(line.find("endif")!= string::npos){                                                                    //! exit to IF condition
-                insideIf = false;
-                insideIfElse = false;
+            insideIf = false;
+            insideIfElse = false;
         }else if((line.find("else") != string::npos)||(line.find("elif")!=string::npos)){                               //! entry to ELSE/ELIF condition
-                insideIfElse = true;
+            insideIfElse = true;
         }else if((line.find("if ") != string::npos)){                                                                   //! entry to IF condition
             insideIf = true;
         }else if(((line.find("line.") != string::npos)||(line.find("hide.")!=string::npos))&&insideIfElse == false){    //! making register object and print it on screen
             if(insideFor == true){
-                r.forOperations(line, tempForLine, tempGroupLine, width, baseAddress, insideIf, insideFor);
+                r.forOperations(line, tempForLine, tempGroupLine, width, baseAddress, insideIf, insideFor, first_print);
             }else{
-                r.print(width,r.searching(line,g, baseAddress, insideIf, insideFor));
+                r = r.searching(line, g, baseAddress, insideIf, insideFor);
+                r.print(width, r, first_print);
             }
+            first_print = false;
         }
     }
 

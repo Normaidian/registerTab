@@ -8,8 +8,6 @@ using namespace std;
 class Register{
 public:
 
-    bool first_print = true;
-
     string offset;
     string name;
     string address;
@@ -47,7 +45,7 @@ public:
 
         return numberS;
     }
-    Register searching(string line, Group g, string baseAddress, bool insideIf, bool insideFor);                                                    //! Searching registers in line from file
-    void print(int width,Register r);                                                                                                               //! Printed row in console
-    void forOperations(string line, string tempForLine, string tempGroupLine, int width, string baseAddress, bool insideIf, bool insideFor);        //! Creating registers from FOR
+    Register searching(string line, Group &g, string baseAddress, bool insideIf, bool insideFor);                                                    //! Searching registers in line from file
+    void print(int width,Register &r, bool first_print);                                                                                                               //! Printed row in console
+    void forOperations(string line, string tempForLine, string tempGroupLine, int width, string baseAddress, bool insideIf, bool insideFor, bool first_print);        //! Creating registers from FOR
 };

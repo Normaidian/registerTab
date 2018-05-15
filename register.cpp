@@ -1,13 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <cmath>
 #include <string>
 #include <sstream>
+#include <regex>
 #include "register.h"
 
 using namespace std;
 
-Register Register::searching(string line, Group g,string baseAddress, bool insideIf, bool insideFor){
+Register Register::searching(string line, Group &g,string baseAddress, bool insideIf, bool insideFor){
     Register r;
 
     if(line.find("line.")!=string::npos){
@@ -41,7 +43,7 @@ Register Register::searching(string line, Group g,string baseAddress, bool insid
     return r;
 }
 
-void Register::print(int width, Register r){
+void Register::print(int width, Register &r,bool first_print){
     string str, floor;
 
     //! Created string with blank space and floor equal in length of name column
@@ -51,7 +53,7 @@ void Register::print(int width, Register r){
             floor = floor + "_";
         }
     }else{
-        for(int i = 0;i < 23 ; i++){
+        for(int i = 0;i <= 23 ; i++){
             str = str + " ";
             floor = floor + "_";
         }
@@ -78,7 +80,7 @@ void Register::print(int width, Register r){
     cout << "|" << floor << "|________________________|_____________________|________________|_______________|" << endl;
 }
 
-void Register::forOperations(string line, string tempForLine, string tempGroupLine, int width, string baseAddress, bool insideIf, bool insideFor){
+void Register::forOperations(string line, string tempForLine, string tempGroupLine, int width, string baseAddress, bool insideIf, bool insideFor, bool first_print){
     int numberOfParam = 0;
     string tempLine = tempForLine;
 
@@ -88,8 +90,15 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
             tempLine = tempLine.substr(tempLine.find(")")+1,tempLine.size());
         }
     }
+    int iterations;
 
-    int iterations = atoi(tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1).c_str());
+    if (regex_match(tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1), regex("[0-9]+"))){
+        iterations = atoi(tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1).c_str());
+    }
+    else{
+        throw(std::logic_error("---Wrong iterator " + tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1) + "---"));
+    }
+
     tempForLine = tempForLine.substr(tempForLine.find(")")+1,tempForLine.size());
 
     string tabValues[numberOfParam-1][iterations];
@@ -140,7 +149,10 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
             }
         }
         Group g;
-        g = g.searching(tempGroup);
-        print(width,searching(tempLine,g,baseAddress,insideIf, insideFor));
+        g=g.searching(tempGroup);
+        Register r;
+        r = r.searching(tempLine,g,baseAddress,insideIf, insideFor);
+        print(width,r,first_print);
+        first_print = false;
     }
 }

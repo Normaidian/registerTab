@@ -61,9 +61,6 @@ int main(){
                 system("cls");
             break;
         }
-
-
-
     }while(true);
 
     return 0;
@@ -146,7 +143,7 @@ void allRegisterTabel(){
             width = width+3;
             first_print = true;
         }else if(line.find("base ") != string::npos){
-            baseAddress = line.substr(line.find("base ") + 5, line.size() - line.find("base ") + 5);
+            baseAddress = line.substr(line.find("0x"), line.size() - line.find("base ") + 5);
         }else if((line.find("%for") != string::npos)){                                                                  //! entry to for condition
             tempForLine = line;
             insideFor = true;

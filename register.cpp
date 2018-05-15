@@ -36,7 +36,11 @@ Register Register::searching(string line, Group &g,string baseAddress, bool insi
         r.address = "0x" + decToHex( hexToDec(r.offset) + hexToDec(baseAddress));                                                   //! Line address
         r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));                                                      //! Line range
 
-        if (insideIf == true){
+        if (insideIf == true && insideFor == true){
+            r.name = r.name + "***";
+        }else if(insideFor == true){
+            r.name = r.name + "*";
+        }else if (insideIf == true){
             r.name = r.name + "**";
         }
     }
@@ -103,38 +107,58 @@ void Register::forOperations(string line, string tempForLine, string tempGroupLi
 
     string tabValues[numberOfParam-1][iterations];
 
-    for(int i = 0; i < numberOfParam-1; i++){                                                                                       //! Creating table with parameters
-        string params = tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1);
 
-        tabValues[i][0] = params.substr(0,params.find(","));
-        string jump = params.substr(params.find(",")+1,params.size());
-        bool insideList = false;
 
-        for(int j = 1; j <= iterations; j++){
+        for(int i = 0; i < numberOfParam-1; i++){                                                                                       //! Creating table with parameters
+            string params = tempForLine.substr(tempForLine.find("(")+1,tempForLine.find(")")-tempForLine.find("(")-1);
 
-            if((params.find("list:") != string::npos)||insideList == true){
-                insideList = true;
 
-                if(j-1 == 0){
-                    tabValues[i][j-1] = params.substr(params.find(':\"')+1,params.find(",") - params.find(':"')-1);
-                }else if(j+1 == iterations){
-                    tabValues[i][j-1] = params.substr(0,params.find(','));
-                    tabValues[i][j] = params.substr(params.find(',')+1,params.find('"')-2);
-                    insideList = false;
+            tabValues[i][0] = params.substr(0,params.find(","));
+            string jump = params.substr(params.find(",")+1,params.size());
+            bool insideList = false;
+
+            if (iterations < 2){
+                if((params.find("list:") != string::npos)||insideList == true){
+                      tabValues[i][0] = params.substr(params.find('list:/"')+1,(params.size()-1)-(params.find('list:/"')+1));
+                }else if(params.find("0x") != string::npos){
+                    tabValues[i][0] ="0x" + decToHex(hexToDec(tabValues[i][0]) + hexToDec(jump));
                 }else{
-                    tabValues[i][j-1] = params.substr(0,params.find(','));
+                    tabValues[i][0] = toString(atoi(tabValues[i][0].c_str()) + atoi(jump.c_str()));
                 }
-
-                params = params.substr(params.find(",")+1,params.size());
-            }else if(params.find("0x") != string::npos){
-                tabValues[i][j] ="0x" + decToHex(hexToDec(tabValues[i][j-1]) + hexToDec(jump));
             }else{
-                tabValues[i][j] = toString(atoi(tabValues[i][j-1].c_str()) + atoi(jump.c_str()));
-            }
-        }
+                for(int j = 1; j < iterations; j++){
 
-        tempForLine = tempForLine.substr(tempForLine.find(")")+1,tempForLine.size());
-    }
+                    if((params.find("list:") != string::npos)||insideList == true){
+                        insideList = true;
+
+                        if(params.find("list:") != string::npos){
+                            params = params.substr(params.find('list:/"')+1,(params.size()-1)-(params.find('list:/"')+1));
+                        }
+
+
+                        if(iterations > 2){
+                            if(j-1 == 0){
+                                tabValues[i][0] = params.substr(0,params.find(','));
+                                params = params.substr(params.find(',')+1,params.size());
+                            }
+                            tabValues[i][j] = params.substr(0,params.find(','));
+
+                        }else{
+                            tabValues[i][j-1] = params.substr(0,params.find(','));
+                            tabValues[i][j] = params.substr(params.find(',')+1,params.size());
+
+                        }
+
+                        params = params.substr(params.find(",")+1,params.size());
+                    }else if(params.find("0x") != string::npos){
+                        tabValues[i][j] ="0x" + decToHex(hexToDec(tabValues[i][j-1]) + hexToDec(jump));
+                    }else{
+                        tabValues[i][j] = toString(atoi(tabValues[i][j-1].c_str()) + atoi(jump.c_str()));
+                    }
+                }
+            }
+            tempForLine = tempForLine.substr(tempForLine.find(")")+1,tempForLine.size());
+        }
 
     for(int j = 0; j < iterations; j++){                                                                                            //! Replace the parameter number with its value
         string tempLine = line;

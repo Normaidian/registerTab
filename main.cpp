@@ -5,6 +5,7 @@
 #include <sstream>
 #include <windows.h>
 #include <list>
+#include <regex>
 #include "register.h"
 
 using namespace std;
@@ -23,9 +24,10 @@ int main(){
     system("cls");
     SetConsoleTextAttribute( hOut, 7);
     width = 0;
-    int choice;
 
     do{
+        int choice;
+
         cout << " ____________________________________"<< endl;
         cout << "|               MENU                 |" << endl;
         cout << "|____________________________________|" << endl;
@@ -37,7 +39,6 @@ int main(){
         cin >> choice;
 
         switch(choice){
-
             case 1:
                 try{
                     allRegisterTabel();
@@ -60,6 +61,9 @@ int main(){
                 system("cls");
             break;
         }
+
+
+
     }while(true);
 
     return 0;
@@ -140,8 +144,6 @@ void allRegisterTabel(){
             }
 
             width = width+3;
-            //bool *pointer = &r.first_print;
-            //*pointer = true;
             first_print = true;
         }else if(line.find("base ") != string::npos){
             baseAddress = line.substr(line.find("base ") + 5, line.size() - line.find("base ") + 5);

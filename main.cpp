@@ -26,6 +26,7 @@ int main(){
     width = 0;
 
     do{
+
         int choice;
 
         cout << " ____________________________________"<< endl;
@@ -33,9 +34,11 @@ int main(){
         cout << "|____________________________________|" << endl;
         cout << "|    1 - Get table with registers    |" << endl;
         cout << "|____________________________________|" << endl;
-        cout << "|    0 - Exit                        |" << endl;
+        cout << "|    9 - Exit                        |" << endl;
         cout << "|____________________________________|" << endl;
         cout << "Select operation: ";
+        cin.clear();
+        cin.sync();
         cin >> choice;
 
         switch(choice){
@@ -50,17 +53,19 @@ int main(){
                     system("cls");
                 }
             break;
-            case 0:
+            case 9:
                 exit(0);
             break;
             default:
                 SetConsoleTextAttribute( hOut, 12 );
                 cout << "--Wrong choice---" << endl;
                 SetConsoleTextAttribute( hOut, 7 );
+
                 system("pause");
                 system("cls");
             break;
         }
+
     }while(true);
 
     return 0;

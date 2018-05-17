@@ -50,7 +50,7 @@
 	<sstream>
 	<algorithm>
 
-1526379193 source:c:\users\pracownik\documents\github\registertab\register.cpp
+1526558517 source:c:\users\pracownik\documents\github\registertab\register.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
@@ -60,14 +60,13 @@
 	<regex>
 	"register.h"
 
-1526365603 c:\users\pracownik\documents\github\registertab\register.h
+1526558531 c:\users\pracownik\documents\github\registertab\register.h
 	<iostream>
 	<algorithm>
 	<string>
 	"group.h"
 
-1526386228 source:c:\users\pracownik\documents\github\registertab\main.cpp
-	<conio.h>
+1526545084 source:c:\users\pracownik\documents\github\registertab\main.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>

@@ -97,9 +97,11 @@ void allRegisterTabel(){
     SetConsoleTextAttribute( hOut, 7 );
     cin >> baseAddress;
 
-    for (int i = 2; i < baseAddress.length()-2;i++){                                                                    //! Checking corrections of base address
-        if(!isxdigit(baseAddress[i])){
-            throw(std::logic_error("---Wrong base address!---"));
+    if (atoi(baseAddress.c_str()) != 0){
+        for (int i = 2; i < baseAddress.length()-2;i++){                                                                    //! Checking corrections of base address
+            if(!isxdigit(baseAddress[i])){
+                throw(std::logic_error("---Wrong base address!---"));
+            }
         }
     }
 

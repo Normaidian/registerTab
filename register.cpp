@@ -17,7 +17,7 @@ Register Register::searching(string line, Group &g,string baseAddress, bool insi
         r.name = line.substr(line.find('"')+1,line.find(',')-line.find('"')-1);                                                     //! Line name
         r.access = g.access;                                                                                                        //! Line access
         r.offset = "0x" + decToHex(hexToDec(line.substr(line.find("0x"),line.find('"')-1-line.find("0x")))+hexToDec(g.offset));     //! Line offset
-        r.address =  "0x" + decToHex(hexToDec(r.offset) + hexToDec(baseAddress));                                                   //! Line address
+        r.address = "0x" + decToHex(hexToDec(r.offset) + hexToDec(baseAddress));                                                    //! Line address
         r.range = line.substr(line.find(".")+1,line.find(" ")-line.find("."));                                                      //! Line range
 
         if (insideIf == true && insideFor == true){

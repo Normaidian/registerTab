@@ -138,13 +138,10 @@ void allRegisterTabel(){
                 g = g.searching(line);
         }else if(line.find("width ") != string::npos){                                                                  //! setting values of width
             if(line.find("0x") != string::npos){
-                if(r.hexToDec(line.substr(line.find("0x")+2,line.size())) > width){
-                    width = r.hexToDec(line.substr(line.find("0x")+2,line.size()));
-                }
+                width = r.hexToDec(line.substr(line.find("0x")+2,line.size()));
+
             }else{
-                if(atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str()) > width){
-                    width = atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-1).c_str());
-                }
+                width = atoi(line.substr(line.find("width ")+6,line.find(".")-line.find("width ")-6).c_str());
             }
 
             width = width+3;

@@ -87,14 +87,16 @@ void allRegisterTabel(){
     SetConsoleTextAttribute( hOut, 7 );
     cin >> baseAddress;
 
-    for (int i = 2; i < baseAddress.length()-2;i++){                                                                    //! Checking corrections of base address
-        if(!isxdigit(baseAddress[i])){
-            SetConsoleTextAttribute( hOut, 12 );
-            cout << "---Wrong base address!---" << endl;
-            SetConsoleTextAttribute( hOut, 7 );
-            system("pause");
-            system("cls");
-            main();
+    if (atoi(baseAddress.c_str())!=0){
+        for (int i = 2; i < baseAddress.length()-2;i++){                                                                    //! Checking corrections of base address
+            if(!isxdigit(baseAddress[i])){
+                SetConsoleTextAttribute( hOut, 12 );
+                cout << "---Wrong base address!---" << endl;
+                SetConsoleTextAttribute( hOut, 7 );
+                system("pause");
+                system("cls");
+                main();
+            }
         }
     }
 

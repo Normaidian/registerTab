@@ -46,3 +46,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 *.exe
+*.exe
+*.o
+*.depend
+*.layout
+registerTab.depend
+registerTab.layout

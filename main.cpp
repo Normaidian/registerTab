@@ -154,7 +154,7 @@ void allRegisterTabel(){
                 insideIfElse = false;
         }else if((line.find("else") != string::npos)||(line.find("elif")!=string::npos)){                               //! entry to ELSE/ELIF condition
                 insideIfElse = true;
-        }else if((line.find("if ") != string::npos)){                                                                   //! entry to IF condition
+        }else if((line.find("if ") != string::npos)&&(line.find("bitfld")==string::npos)){                              //! entry to IF condition
             insideIf = true;
         }else if(((line.find("line.") != string::npos)||(line.find("hide.")!=string::npos))&&insideIfElse == false){    //! making register object and print it on screen
             if(insideFor == true){

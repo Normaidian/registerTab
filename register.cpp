@@ -58,7 +58,7 @@ void Register::print(int width, Register r, string coreAddress){
     }
     //! Printed table header
 
-    if (coreAddress == "none"){
+    if (coreAddress == "none"){                                                                                                             //! print for peripherals file
         if(first_print == true){
             cout << " " << floor << "________________________________________________________________________________" << endl;
             cout << "|" << str.substr(0,5) <<"Register name" << str.substr(0,str.length()-18) << "|";
@@ -77,7 +77,7 @@ void Register::print(int width, Register r, string coreAddress){
         cout << str.substr(0,6) << r.offset << str.substr(0,16-r.offset.length()-6) << "|";                                     //! print Register offset
         cout << str.substr(0,6) << r.range << str.substr(0,15-r.range.length()-6) << "|" << endl;                               //! print Register range
         cout << "|" << floor << "|________________________|_____________________|________________|_______________|" << endl;
-    }else if (coreAddress == "spr"){
+    }else if (coreAddress == "spr"){                                                                                                       //! print for Core 64 file
         if(r.offset.length() < 7){
             string s;
             for(int i = 0; i < 7-r.offset.length(); i++){
@@ -104,14 +104,14 @@ void Register::print(int width, Register r, string coreAddress){
         cout << "|" << str.substr(0,3) << r.name << str.substr(0,str.length()-r.name.length()-3) << "|";                        //! print Register name
         cout << str.substr(0,5) << r.access << str.substr(0,24-r.access.length()-5) << "|";                                     //! print Register access
         cout << str.substr(0,5) << r.address << str.substr(0,21-r.address.length()-5) << "|";                                   //! print Register address
-        cout << "   " << r.offset[2] << "   " << "|";
-        cout << "   " << r.offset[3] << "   " << "|";
-        cout << "   " << r.offset[4] << "   " << "|";
-        cout << "   " << r.offset[5] << "   " << "|";
-        cout << "   " << r.offset[6] << "   " << "|";
+        cout << "   " << r.offset[2] << "   " << "|";                                                                           //! print Opcode
+        cout << "   " << r.offset[3] << "   " << "|";                                                                           //! print Opcode
+        cout << "   " << r.offset[4] << "   " << "|";                                                                           //! print Opcode
+        cout << "   " << r.offset[5] << "   " << "|";                                                                           //! print Opcode
+        cout << "   " << r.offset[6] << "   " << "|";                                                                           //! print Opcode
         cout << str.substr(0,6) << r.range << str.substr(0,15-r.range.length()-6) << "|" << endl;                               //! print Register range
         cout << "|" << floor << "|________________________|_____________________|_______|_______|_______|_______|_______|_______________|" << endl;
-    }else if(coreAddress == "cp14/15"){
+    }else if(coreAddress == "cp14/15"){                                                                                                 //! print for Core 32 file
         if(r.offset.length() < 6){
             string s;
             for(int i = 0; i < 6-r.offset.length(); i++){
@@ -138,10 +138,10 @@ void Register::print(int width, Register r, string coreAddress){
         cout << "|" << str.substr(0,3) << r.name << str.substr(0,str.length()-r.name.length()-3) << "|";                        //! print Register name
         cout << str.substr(0,5) << r.access << str.substr(0,24-r.access.length()-5) << "|";                                     //! print Register access
         cout << str.substr(0,5) << r.address << str.substr(0,21-r.address.length()-5) << "|";                                   //! print Register address
-        cout << "   " << r.offset[2] << "   " << "|";
-        cout << "   " << r.offset[3] << "   " << "|";
-        cout << "   " << r.offset[4] << "   " << "|";
-        cout << "   " << r.offset[5] << "   " << "|";                                                                                   //! print Register offset
+        cout << "   " << r.offset[2] << "   " << "|";                                                                           //! print Opcode
+        cout << "   " << r.offset[3] << "   " << "|";                                                                           //! print Opcode
+        cout << "   " << r.offset[4] << "   " << "|";                                                                           //! print Opcode
+        cout << "   " << r.offset[5] << "   " << "|";                                                                           //! print Opcode
         cout << str.substr(0,6) << r.range << str.substr(0,15-r.range.length()-6) << "|" << endl;                               //! print Register range
         cout << "|" << floor << "|________________________|_____________________|_______|_______|_______|_______|_______________|" << endl;
     }

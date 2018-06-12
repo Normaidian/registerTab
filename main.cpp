@@ -11,7 +11,7 @@ using namespace std;
 
 fstream file;
 int width, numberOfParams = 0;
-string fileAddress, baseAddress, tempForLine, tempGroupLine;
+string fileAddress, baseAddress, tempForLine, tempGroupLine, coreAddress = "none";
 
 void allRegisterTabel();
 string decToHex(string decAdd);
@@ -77,6 +77,14 @@ void allRegisterTabel(){
             system("pause");
             system("cls");
             main();
+        }
+
+        if(fileAddress.find("spr.") != string::npos){
+            coreAddress = "spr";
+        }else if((fileAddress.find("cp14.") != string::npos)||(fileAddress.find("cp15.") != string::npos)){
+            coreAddress = "cp14/15";
+        }else{
+            coreAddress = "none";
         }
     }while(!file.good());
 
@@ -160,9 +168,9 @@ void allRegisterTabel(){
             insideIf = true;
         }else if(((line.find("line.") != string::npos)||(line.find("hide.")!=string::npos))&&insideIfElse == false){    //! making register object and print it on screen
             if(insideFor == true){
-                r.forOperations(line, tempForLine, tempGroupLine, width, baseAddress, insideIf, insideFor);
+                r.forOperations(line, tempForLine, tempGroupLine, width, baseAddress, insideIf, insideFor, coreAddress);
             }else{
-                r.print(width,r.searching(line,g, baseAddress, insideIf, insideFor));
+                r.print(width,r.searching(line,g, baseAddress, insideIf, insideFor), coreAddress);
             }
         }
     }

@@ -45,12 +45,12 @@
 	<string>
 	"group.h"
 
-1526621028 c:\users\pracownik\documents\github\registertab\group.h
+1528698145 c:\users\pracownik\documents\github\registertab\group.h
 	<iostream>
 	<sstream>
 	<algorithm>
 
-1527507305 source:c:\users\pracownik\documents\github\registertab\register.cpp
+1528799654 source:c:\users\pracownik\documents\github\registertab\register.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>
@@ -58,13 +58,13 @@
 	<sstream>
 	"register.h"
 
-1527507305 c:\users\pracownik\documents\github\registertab\register.h
+1528795704 c:\users\pracownik\documents\github\registertab\register.h
 	<iostream>
 	<algorithm>
 	<string>
 	"group.h"
 
-1528094608 source:c:\users\pracownik\documents\github\registertab\main.cpp
+1528795713 source:c:\users\pracownik\documents\github\registertab\main.cpp
 	<iostream>
 	<fstream>
 	<cstdlib>

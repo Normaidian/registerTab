@@ -11,7 +11,7 @@ using namespace std;
 
 fstream file;
 int width, numberOfParams = 0;
-string fileAddress, baseAddress, tempForLine, tempGroupLine, coreAddress = "none";
+string fileAddress, baseAddress, tempForLine, tempGroupLine, coreAddress = "none", hexOrDec = "dec";
 
 void allRegisterTabel();
 string decToHex(string decAdd);
@@ -88,30 +88,34 @@ void allRegisterTabel(){
         }
     }while(!file.good());
 
+    if(coreAddress == "none"){
+        SetConsoleTextAttribute( hOut, 10 );
+        cout << "Base address: ";
+        SetConsoleTextAttribute( hOut, 7 );
+        cin >> baseAddress;
 
-
-    SetConsoleTextAttribute( hOut, 10 );
-    cout << "Base address: ";
-    SetConsoleTextAttribute( hOut, 7 );
-    cin >> baseAddress;
-
-    if (atoi(baseAddress.c_str())!=0){
-        for (int i = 2; i < baseAddress.length()-2;i++){                                                                    //! Checking corrections of base address
-            if(!isxdigit(baseAddress[i])){
-                SetConsoleTextAttribute( hOut, 12 );
-                cout << "---Wrong base address!---" << endl;
-                SetConsoleTextAttribute( hOut, 7 );
-                system("pause");
-                system("cls");
-                main();
+        if (atoi(baseAddress.c_str())!=0){
+            for (int i = 2; i < baseAddress.length()-2;i++){                                                                    //! Checking corrections of base address
+                if(!isxdigit(baseAddress[i])){
+                    SetConsoleTextAttribute( hOut, 12 );
+                    cout << "---Wrong base address!---" << endl;
+                    SetConsoleTextAttribute( hOut, 7 );
+                    system("pause");
+                    system("cls");
+                    main();
+                }
             }
         }
-    }
 
-    SetConsoleTextAttribute( hOut, 10 );                                                                                //! Creating tab with values from *.p file
-    cout << "Number of values from file *.p: ";
-    SetConsoleTextAttribute( hOut, 7 );
-    cin >> numberOfParams;
+        SetConsoleTextAttribute( hOut, 10 );                                                                                //! Creating tab with values from *.p file
+        cout << "Number of values from file *.p: ";
+        SetConsoleTextAttribute( hOut, 7 );
+        cin >> numberOfParams;
+
+    }else{
+        baseAddress = "0";
+        numberOfParams = 0;
+    }
 
     string tabParams[numberOfParams];
 
